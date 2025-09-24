@@ -30,10 +30,8 @@ const uploadPath = (
  * @returns 고유한 저장용 파일명
  */
 const createFileNm = (uploadUrl, originalNm) => {
-  const ext = path.extname(originalNm)
-  const arr = path.normalize(uploadUrl).split(path.sep)
-
-  return `${arr[0]}_${arr[1]}_${arr[2]}_${Date.now()}_${nanoid()}${ext}`
+  const arr = uploadUrl.split("\\")
+  return `${arr[arr.length - 3]}_${arr[arr.length - 2]}_${arr[arr.length -1]}_${Date.now()}_${nanoid()}${ext}`
 }
 
 /**

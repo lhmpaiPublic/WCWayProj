@@ -32,23 +32,6 @@ export default function Login() {
 
   return (
     <div className="login-page">
-      <header className="topbar">
-        <div className="brand">공중 화장실 위치 정보 서비스</div>
-        <nav className="nav">
-          <a href="#/">HOME</a>
-          <a href="#/features">기능설명</a>
-          <a href="#/board">게시판</a>
-        </nav>
-        <div className="auth">
-          <a href="#/login" className="link">
-            로그인
-          </a>
-          <a href="#/signup" className="primary">
-            회원가입
-          </a>
-        </div>
-      </header>
-
       <div
         className="bd-wrap"
         style={{

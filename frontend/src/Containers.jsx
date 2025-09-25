@@ -11,6 +11,11 @@ import Features from "./pages/Features"
 const RoutesWrapper = styled.div`
   padding-top: 2em;
 `
+
+const FooterWrapper = styled.div`
+  padding-top: 1em;
+`
+
 export default function Containers() {
   return (
     <Container sx={{ paddingTop: "50px" }}>
@@ -24,6 +29,13 @@ export default function Containers() {
           <Route path="/login" element={<LoginPage />} />
         </Routes>
       </RoutesWrapper>
+      <FooterWrapper>
+      <footer className="footer">
+         <div>
+           <h2>가장 가까운 공중 화장실 정보를 쉽고 빠르게 찾아주는 서비스.</h2>
+         </div>
+      </footer>
+      </FooterWrapper>
     </Container>
   )
 }

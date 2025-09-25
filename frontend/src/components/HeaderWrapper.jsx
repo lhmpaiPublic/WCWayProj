@@ -34,15 +34,18 @@ export default function HeaderWrapper() {
 
   return (
     <HeaderRoot>
-      <Typography variant="h3" component={Link} to="/">
-        WCWay
+      <Typography variant="h5">
+        공중 화장실 위치 정보 서비스
       </Typography>
       <Breadcrumbs>
+        <Typography variant="h6" component={Link} to="/">
+          HOME
+        </Typography>
         <Typography variant="h6" component={Link} to="/features">
-          Features
+          기능설명
         </Typography>
         <Typography variant="h6" component={Link} to="/board">
-          Board
+          게시판
         </Typography>
       </Breadcrumbs>
       <Box>

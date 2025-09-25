@@ -1,0 +1,103 @@
+Kakao API 사용하기
+https://developers.kakao.com/console/app 에서 애플리케이션 추가하기
+플랫폼으로 들어가서 개발환경 또는 배포환경에 맞는 도메인 주소 추가하기
+(ex: http://localhost:5173)
+앱 키로 들어가서 JavaScript 키 복사!
+TypeScriptd에 필요한 타입정의 패키지 설치하기
+npm install kakao.maps.d.ts --save-dev
+tsconfig.json의 compilerOptions.types 속성에 패키지 추가
+	{
+	...,
+	"compilerOptions": {
+		...,
+		"types": [
+	  	...,
+  		"kakao.maps.d.ts"
+		]
+	}
+	}
+Kakao map 라이브러리 설치하기
+npm i react-kakao-maps
+복사한 앱 키(JavaScript)를 통해서 지도 불러오기
+지도 불러오는 방법1
+프로젝트의 root에 위치한 index.html에 앱 키를 추가
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React + TS</title>
+  </head>
+
+  <body>
+    <!-- Kakao Map API -->
+    <!-- <script
+      type="text/javascript"
+      src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%VITE_KAKAOMAP_JAVASCRIPT_APP_KEY%&libraries=services,clusterer"
+    ></script> -->
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+지도를 불러올 컴포넌트 만들기(KakaoMap.tsx)
+import { Map, MapMarker } from 'react-kakao-maps-sdk';
+
+const KakaoMap = () => {
+  const s_lat = 37.55465000468857;
+  const s_lng = 126.97059787494679;
+
+  return (
+    <>
+      <Map center={{ lat: s_lat, lng: s_lng }} style={{ width: '100%', height: '360px' }}>
+        <MapMarker position={{ lat: s_lat, lng: s_lng }}></MapMarker>
+      </Map>
+    </>
+  );
+};
+
+export default KakaoMap;
+지도 불러오는 방법2
+지도를 불러오는 커스텀 훅 만들기(useKakaoLoader.tsx)
+import { useKakaoLoader as useKakaoLoaderOrigin } from 'react-kakao-maps-sdk';
+
+export default function useKakaoLoader() {
+  useKakaoLoaderOrigin({
+    /**
+     * ※주의※ appkey의 경우 본인의 appkey를 사용하셔야 합니다.
+     * 해당 키는 docs를 위해 발급된 키 이므로, 임의로 사용하셔서는 안됩니다.
+     *
+     * @참고 https://apis.map.kakao.com/web/guide/
+     */
+    appkey: import.meta.env.VITE_KAKAOMAP_JAVASCRIPT_APP_KEY,
+    libraries: ['clusterer', 'drawing', 'services'],
+  });
+}
+커스텀 훅을 통해 지도를 불러온 후 보여줄 컴포넌트 만들기(KakaoMap.tsx)
+import { Map } from 'react-kakao-maps-sdk';
+import * as styled from './KakaoMap.style';
+import useKakaoLoader from './useKakaoLoader';
+
+export default function BasicMap() {
+  useKakaoLoader();
+
+  return (
+    <styled.KakaoMapWrapper>
+      <Map // 지도를 표시할 Container
+        id="map"
+        center={{
+          // 지도의 중심좌표
+          lat: 33.450701,
+          lng: 126.570667,
+        }}
+        style={{
+          // 지도의 크기
+          width: '100%',
+          height: '100%',
+        }}
+        level={3} // 지도의 확대 레벨
+      />
+    </styled.KakaoMapWrapper>
+  );
+}

@@ -1,0 +1,280 @@
+회사를 다니면서 내가 했던 것들이 잘못된 부분이 있었구나 했는데, 사람들이 너무 많이 봐서 as 같은 느낌으로 다시 작성한다.
+
+ 
+
+리액트 프로젝트 타입스크립트 악시오스 인터셉터 에러핸들링 드가자잇
+
+ 
+
+AxiosInstance
+ 
+
+import { config } from '@/config/env';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { setupResponseInterceptor } from '../interceptors/responseInterceptor';
+import { setupRequestInterceptor } from '../interceptors/requestInterceptor';
+
+const baseURL = import.meta.env.DEV ? '/api' : config.backUrl;
+/**
+ * @description apiRequester를 통한 axios 설정
+ */
+export const apiRequester: AxiosInstance = axios.create({
+  baseURL,
+  timeout: 5000,
+});
+
+export const setRequestDefaultHeader = (
+  requestconfig: AxiosRequestConfig,
+  signal?: AbortSignal,
+) => {
+  const config = requestconfig;
+  config.headers = {
+    ...config.headers,
+    'Content-Type':
+      config.headers?.['Content-Type'] ?? 'application/json;charset=utf-8',
+  };
+
+  if (signal) {
+    config.signal = signal;
+  }
+
+  return config;
+};
+
+setupRequestInterceptor(apiRequester);
+setupResponseInterceptor(apiRequester);
+ 
+
+모듈화를 좀 더 할 수 있다.
+
+
+ 
+
+axios.create로 baseUrl마다 interceptor를 분기할 수 있고, JSDoc로 간단하게 설명도 첨부 가능.
+
+ 
+
+기존과는 다르게 header에 Content-Type이 존재안하면 삽입하는 방식으로 유연성을 더했다.(?? 연산자 사용)
+
+interceptor도 함수형으로 선언하여서 모듈화
+
+ 
+
+GetData 등의 http 로직
+ 
+
+기존 코드의 문제점은 에러 핸들링을 할 때, throw new Error로 axios 에러 핸들링을 한건데, 이러면 기존에 존재하는 status의 정보 등을 전부 날려버리게 되어서 좋지 않은 방향이다.
+
+ 
+
+import { AxiosRequestConfig } from 'axios';
+import { apiRequester, setRequestDefaultHeader } from './apiRequestor';
+import { APIResponse } from '@/types/APIResponse.types';
+
+const bracket = {};
+
+export const getData = async <T>(
+  url: string,
+  signal?: AbortSignal,
+  config?: AxiosRequestConfig,
+): Promise<APIResponse<T>> => {
+  const modifiedConfig = setRequestDefaultHeader(config || bracket, signal);
+  const response = await apiRequester.get<APIResponse<T>>(url, modifiedConfig);
+  return response.data;
+};
+import { Pagination } from './pagenation.types';
+
+export interface APIResponse<T> {
+  data: T;
+  status: number;
+  message: string | undefined;
+  pagination: Pagination | undefined;
+}
+ 
+
+ 
+
+위과 같이 제네릭을 사용한 타입 선언으로 편하게 이용 가능하다.
+
+import { AxiosRequestConfig } from 'axios';
+import { apiRequester, setRequestDefaultHeader } from './apiRequestor';
+
+const bracket = {};
+
+export const getData = async <T>(
+  url: string,
+  signal?: AbortSignal,
+  config?: AxiosRequestConfig,
+): Promise<T> => {
+  const modifiedConfig = setRequestDefaultHeader(config || bracket, signal);
+  const response = await apiRequester.get<T>(url, modifiedConfig);
+  return response.data;
+};
+ 
+
+그렇지만 나는 지정안하고 AxiosResponse로 사용한다.
+
+
+ 
+
+ 
+
+Post의 경우
+import { AxiosRequestConfig } from 'axios';
+
+import { apiRequester, setRequestDefaultHeader } from './apiRequestor';
+
+const bracket = {};
+
+/**
+ * @param T 보내는 데이터 타입
+ * @param R 받는 데이터 타입
+ * @description `R`에는 `<User, { id: numer}>` 처럼 직접 지정
+ */
+export const postData = async <T, R = unknown>(
+  url: string,
+  data?: T,
+  signal?: AbortSignal,
+  config?: AxiosRequestConfig,
+): Promise<R> => {
+  const modifiedConfig = setRequestDefaultHeader(config || bracket, signal);
+  const response = await apiRequester.post<R>(url, data, modifiedConfig);
+  return response.data;
+};
+ 
+
+unkwnon으로 받는 데이터 타입을 놓고 직접 받는 데이터 타입을 지정함으로써 해결 가능.
+
+근데 보통 post하면 새로 데이터 안줄때가 많아서 굳이 싶으면 지정하지 않아도 된다.
+
+Interceptor 에러 핸들링
+interceptor로 응답을 가로채자.
+
+import { AxiosInstance, AxiosResponse } from 'axios';
+import { handleError } from './utils/handleError';
+
+export const setupResponseInterceptor = (axiosInstance: AxiosInstance) => {
+  axiosInstance.interceptors.response.use(
+    (response: AxiosResponse) => {
+      if (response.config.url !== '/원하는 url') console.log(response);
+      return response;
+    },
+    (error) => {
+      if (!error.response) {
+        error.response = {
+          status: 0,
+          data: {
+            message: '네트워크 오류',
+          },
+        };
+        return Promise.reject(error);
+      }
+      return handleError(error);
+    },
+  );
+};
+ 
+
+가로챈 응답에서 handleError로 에러 핸들링을 모듈화.
+
+export function handleError(error: unknown) {
+  if (!isAxiosError(error)) return Promise.reject(error);
+  const { response } = error;
+  if (response?.status) {
+    if (!response.status) return `알 수 없는 상태 코드 : ${response.status}`;
+    switch (response.status) {
+        case 400:
+        handleBadRequest(error);
+        break;
+  
+      case 401:
+        return handleUnauthorized(error);
+  
+      case 403:
+        handleForbidden(error);
+        break;
+  
+      case 404:
+        handleNotFound(error);
+        break;
+  
+      case 429:
+        return handleRateLimit(error);
+  
+      case 500:
+        handleServerError(error);
+        break;
+  
+      default:
+        handleDefaultError(error); 
+    }
+  }
+
+  return Promise.reject(error);
+}
+ 
+
+왜 return 과 break가 섞여있냐?? 이건 사실 일관되게 하나로 하는게 맞다. 그러나 별 중요 x.
+
+error를 unknown으로 핸들링하는게 포인트.
+
+ 
+
+도전과제
+이걸 React query/tanstack query(리액트 쿼리)와 엮고, lazy loading를 하면서 suspense를 이용하고, loader에서 queryClinet.fetchQuery 해보자.
+
+ 
+
+끝
+주말에 쉬다가 글쓰는데 열심히 써야지 했는데 피곤해서 대충쓴거같은느낌.
+
+열심히 해야하는데...
+
+ 
+
+참고로 api 요청을 쉽게 개발 환경에서 보고 싶으면 vite.config.ts에서 다음과 같이 설정하자.
+
+ 
+
+import { defineConfig, loadEnv } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import svgr from "vite-plugin-svgr";
+import envCompatible from "vite-plugin-env-compatible";
+
+// https://vite.dev/config/
+export default ({ mode }: { mode: string }) => {
+  process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
+  return defineConfig({
+    plugins: [svgr(), react(), envCompatible()],
+    server: {
+      proxy: {
+        "/api": {
+          target: process.env.VITE_API_URL,
+          changeOrigin: true,
+          rewrite: (path) => {
+            const apiPath = path.replace(/^\/api/, "");
+            console.log(apiPath);
+            return apiPath;
+          },
+          secure: false,
+          ws: true,
+        },
+      },
+    },
+    build: {
+      rollupOptions: {
+        input: {
+          main: "index.html",
+        },
+      },
+    },
+    resolve: {
+      alias: {
+        "@": "/src",
+      },
+    },
+  });
+};
+ 
+
+이러면 쉽게 vscode terminal에서 편하게 볼 수 있다.

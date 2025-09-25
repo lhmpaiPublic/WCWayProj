@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// 2. 초기 상태
+const initialState = {
+  greeting: "",
+  theme: "light",
+};
+
 // 3. Slice 생성
 const uiSlice = createSlice({
   name: "ui",

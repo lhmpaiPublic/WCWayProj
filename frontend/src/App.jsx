@@ -17,17 +17,17 @@ function App() {
       <ErrorProvider>
         <StoreProvider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-        <AlertProvider>
           <SWRConfig value={swrValue}>
+          <AlertProvider>
           <BrowserRouter>
             <Containers />
           </BrowserRouter>
+          </AlertProvider>
           </SWRConfig>
-        </AlertProvider>
         </PersistGate>
         </StoreProvider>
-      </ErrorProvider>
-    </ErrorBoundary>
+     </ErrorProvider>
+   </ErrorBoundary>
   )
 }
 

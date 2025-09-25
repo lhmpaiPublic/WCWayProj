@@ -17,7 +17,7 @@ const FormWrap = styled.form`
   border: 1px solid #eee;
   margin-bottom: 1em;
 `
-const Input = styled.input<{ grow: number }>`
+const Input = styled.input`
   padding: 0.25em 0.5em;
   border: 1px solid #ccc;
   margin-right: 0.5em;

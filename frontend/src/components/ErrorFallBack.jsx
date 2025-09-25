@@ -45,6 +45,7 @@ export default function ErrorFallback({
 
   const extendedError = error
 
+  debugger
   return (
     <ErrorContainer>
       <ErrorWrapper>

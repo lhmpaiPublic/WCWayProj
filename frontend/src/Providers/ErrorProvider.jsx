@@ -6,10 +6,7 @@ import React, {
 import { useErrorBoundary } from "react-error-boundary"
 
 
-export const ErrorContext = createContext>({
-  rootError: null,
-  setRootError: () => {},
-})
+export const ErrorContext = createContext()
 
 export default function ErrorProvider({ children }) {
   const [rootError, setRootError] = useState(null)

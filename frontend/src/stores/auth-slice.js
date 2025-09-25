@@ -1,5 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// 3. 초기 상태
+const initialState = {
+  isLogging: false,
+  isLogOn: false,
+  user: {},
+  error: null,
+  isLocalLogging: false,
+  isLocalLogOn: false,
+  localUser: {},
+  localError: null,
+};
 
 // 4. Slice 정의
 const authSlice = createSlice({

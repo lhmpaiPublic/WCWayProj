@@ -4,9 +4,9 @@ import styled from "@emotion/styled"
 import HeaderWrapper from "./components/HeaderWrapper"
 import JoinPage from "./pages/SignUp"
 import LoginPage from "./pages/Login"
-import MapPage from "./pages/Features"
-import UploadPage from "./pages/Board"
-import BookPage from "./pages/Home"
+import HOME from "./pages/Home"
+import Board from "./pages/Board"
+import Features from "./pages/Features"
 
 const RoutesWrapper = styled.div`
   padding-top: 2em;
@@ -17,11 +17,11 @@ export default function Containers() {
       <HeaderWrapper />
       <RoutesWrapper>
         <Routes>
+          <Route path="/" element={<HOME />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/board" element={<Board />} />
           <Route path="/join" element={<JoinPage />} />
-          <Route path="/Login" element={<LoginPage />} />
-          <Route path="/Map" element={<MapPage />} />
-          <Route path="/FileUpload" element={<UploadPage />} />
-          <Route path="/Book" element={<BookPage />} />
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </RoutesWrapper>
     </Container>

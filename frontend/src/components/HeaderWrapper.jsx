@@ -38,14 +38,11 @@ export default function HeaderWrapper() {
         WCWay
       </Typography>
       <Breadcrumbs>
-        <Typography variant="h6" component={Link} to="/Map">
-          지도
+        <Typography variant="h6" component={Link} to="/features">
+          Features
         </Typography>
-        <Typography variant="h6" component={Link} to="/FileUpload">
-          파일업로드
-        </Typography>
-        <Typography variant="h6" component={Link} to="/Book">
-          BOOK등록
+        <Typography variant="h6" component={Link} to="/board">
+          Board
         </Typography>
       </Breadcrumbs>
       <Box>

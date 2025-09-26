@@ -13,9 +13,11 @@ app.use(cors({ origin: ["http://localhost:5173"], credentials: true }))
 const errorRouter = require("./routes/error-mw")
 const notFoundRouter = require("./routes/not-found-mw")
 const bookRouter = require("./routes/book-router")
+const publicRouter = require("./routes/public-router")
 
 app.use("/upload", fileUploadRouter)
 app.use("/book", bookRouter)
+app.use("/public", publicRouter)
 
 app.get("/login", (req, res, next) => {
   const { usrId, usrPw } = req.query

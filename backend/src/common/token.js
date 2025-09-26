@@ -32,4 +32,4 @@ const getSignData = (token) => {
   return data
 }
 
-export { updateToken, isVerifyRefresh, getSignData }
+module.exports = { updateToken, isVerifyRefresh, getSignData }

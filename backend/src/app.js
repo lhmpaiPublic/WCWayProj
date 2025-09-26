@@ -3,8 +3,6 @@ const express = require("express")
 const app = express()
 const cors = require("cors")
 
-const fileUploadRouter = require("./routes/fileUploadrRouter")
-
 app.listen(3000, () => console.log("http://127.0.0.1:3000"))
 
 app.use(express.json())
@@ -14,6 +12,7 @@ const errorRouter = require("./routes/error-mw")
 const notFoundRouter = require("./routes/not-found-mw")
 const bookRouter = require("./routes/book-router")
 const publicRouter = require("./routes/public-router")
+const fileUploadRouter = require("./routes/fileUploadrRouter")
 
 app.use("/upload", fileUploadRouter)
 app.use("/book", bookRouter)

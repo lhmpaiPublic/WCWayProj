@@ -1,6 +1,6 @@
 export async function fetchToilets({ sido, gu }) {
   const serviceKey = import.meta.env.VITE_SEOUL_API_KEY;
-  if (serviceKey) {
+   if (serviceKey) {
     const url = new URL("https://openapi.seoul.go.kr/api");
     url.pathname += `/${serviceKey}/json/PublicToiletInfo/1/500/`;
     const res = await fetch(url.toString());

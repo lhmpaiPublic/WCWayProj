@@ -1,4 +1,7 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState } from "react"
+import { Button, Box } from "@mui/material"
+import styled from "@emotion/styled"
+import { InputBase, Typography } from "@mui/material"
 
 const MOCK_POSTS = [
   {
@@ -61,113 +64,253 @@ const MOCK_POSTS = [
     comments: 33,
     rank: 93,
   },
-];
+]
+
+const Card = styled(Box)`
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 14px;
+`
+
+const CardHead = styled(Box)`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`
+
+const Avatar = styled(Box)`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ddd;
+`
+
+const Author = styled(Typography)`
+  font-weight: 600;
+`
+
+const DateText = styled(Typography)`
+  color: #777;
+  font-size: 12px;
+`
+
+const Title = styled(Typography)`
+  margin: 8px 0;
+  font-weight: 700;
+`
+
+const Excerpt = styled(Typography)`
+  color: #444;
+  font-size: 14px;
+`
+
+const Tags = styled(Box)`
+  display: flex;
+  gap: 6px;
+  margin: 10px 0;
+`
+
+const Tag = styled(Box)`
+  background: #f6f6fb;
+  border: 1px solid #ddd;
+  color: #666;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 12px;
+`
+
+const Actions = styled(Box)`
+  display: flex;
+  justify-content: flex-end;
+`
+
+const HeroSection = styled(Box)`
+  background: #f4f4ff;
+  padding: 20px 0;
+`
+
+const Wrapper = styled(Box)`
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+`
+
+const HeroBox = styled(Box)`
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 20px;
+`
+
+const Toolbar = styled(Box)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  flex-wrap: wrap;
+  gap: 16px;
+`
+
+const SortButtons = styled(Box)`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+`
+
+const ChipButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== "active",
+})(({ active }) => ({
+  border: "1px solid #ddd",
+  background: active ? "#6c63ff" : "#fff",
+  color: active ? "#fff" : "#666",
+  borderRadius: "999px",
+  padding: "6px 10px",
+  fontSize: "14px",
+  textTransform: "none",
+}))
+
+const SearchBox = styled(Box)`
+  display: flex;
+  gap: 8px;
+`
+
+const SearchInput = styled(InputBase)`
+  height: 36px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0 10px;
+  width: 220px;
+  background: #fff;
+`
+
+const ListSection = styled(Box)`
+  padding: 16px 0 32px;
+`
+
+const Grid = styled(Box)`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+`
 
 function PostCard({ post }) {
   return (
-    <div className="bd-card">
-      <div className="bd-card-head">
-        <div className="bd-avatar" aria-hidden="true" />
-        <div>
-          <div className="bd-author">{post.author}</div>
-          <div className="bd-date">{post.date}</div>
-        </div>
-      </div>
-      <div className="bd-title">{post.title}</div>
-      <div className="bd-excerpt">{post.excerpt}</div>
-      <div className="bd-tags">
+    <Card>
+      <CardHead>
+        <Avatar />
+        <Box>
+          <Author>{post.author}</Author>
+          <DateText>{post.date}</DateText>
+        </Box>
+      </CardHead>
+      <Title variant="subtitle1">{post.title}</Title>
+      <Excerpt>{post.excerpt}</Excerpt>
+      <Tags>
         {post.tags.map((t) => (
-          <span key={t} className="bd-tag">
-            {t}
-          </span>
+          <Tag key={t}>{t}</Tag>
         ))}
-      </div>
-      <div className="bd-actions">
-        <button className="bd-btn ghost">자세히 보기</button>
-      </div>
-    </div>
-  );
+      </Tags>
+      <Actions>
+        <Button variant="outlined">자세히 보기</Button>
+      </Actions>
+    </Card>
+  )
 }
 
 export default function Board() {
-  const [sort, setSort] = useState("latest"); // latest | popular | rank
-  const [query, setQuery] = useState("");
+  const [sort, setSort] = useState("latest")
+  const [query, setQuery] = useState("")
 
   const filtered = useMemo(() => {
-    const q = query.trim();
-    let data = [...MOCK_POSTS];
+    const q = query.trim()
+    let data = [...MOCK_POSTS]
     if (q) {
-      const lower = q.toLowerCase();
+      const lower = q.toLowerCase()
       data = data.filter(
         (p) =>
           p.title.toLowerCase().includes(lower) ||
           p.excerpt.toLowerCase().includes(lower) ||
           p.author.toLowerCase().includes(lower) ||
           p.tags.some((t) => t.toLowerCase().includes(lower))
-      );
+      )
     }
     if (sort === "latest") {
-      data.sort((a, b) => new Date(b.date) - new Date(a.date));
+      data.sort((a, b) => new Date(b.date) - new Date(a.date))
     } else if (sort === "popular") {
-      data.sort((a, b) => b.likes - a.likes);
+      data.sort((a, b) => b.likes - a.likes)
     } else if (sort === "rank") {
-      data.sort((a, b) => b.rank - a.rank);
+      data.sort((a, b) => b.rank - a.rank)
     }
-    return data;
-  }, [sort, query]);
+    return data
+  }, [sort, query])
 
   return (
-    <div className="board-page">
-      <section className="bd-hero">
-        <div className="bd-wrap">
-          <div className="bd-hero-box">
-            <h1>공중 화장실 게시판에 오신 것을 환영합니다!</h1>
-            <p>
+    <>
+      <HeroSection>
+        <Wrapper>
+          <HeroBox>
+            <Typography variant="h5" fontWeight={700}>
+              공중 화장실 게시판에 오신 것을 환영합니다!
+            </Typography>
+            <Typography variant="body1" mt={1.5}>
               주변 화장실에 대한 경험을 공유하고, 리뷰를 남기고, 유용한 정보를
               찾아보세요. 깨끗하고 쾌적한 공중 화장실 문화를 함께 만들어갑니다.
-            </p>
-          </div>
-          <div className="bd-toolbar">
-            <div className="bd-sorts">
+            </Typography>
+          </HeroBox>
+
+          <Toolbar>
+            <SortButtons>
               <span>정렬:</span>
-              <button
-                className={`bd-chip ${sort === "latest" ? "active" : ""}`}
+              <ChipButton
+                active={sort === "latest"}
                 onClick={() => setSort("latest")}
               >
                 최신순
-              </button>
-              <button
-                className={`bd-chip ${sort === "popular" ? "active" : ""}`}
+              </ChipButton>
+              <ChipButton
+                active={sort === "popular"}
                 onClick={() => setSort("popular")}
               >
                 인기순
-              </button>
-              <button
-                className={`bd-chip ${sort === "rank" ? "active" : ""}`}
+              </ChipButton>
+              <ChipButton
+                active={sort === "rank"}
                 onClick={() => setSort("rank")}
               >
                 랭킹순
-              </button>
-            </div>
-            <div className="bd-search">
-              <input
+              </ChipButton>
+            </SortButtons>
+
+            <SearchBox>
+              <SearchInput
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="게시물 검색..."
               />
-              <button className="bd-btn icon">🔍</button>
-            </div>
-          </div>
-        </div>
-      </section>
+              <Button variant="outlined">🔍</Button>
+            </SearchBox>
+          </Toolbar>
+        </Wrapper>
+      </HeroSection>
 
-      <section className="bd-list">
-        <div className="bd-wrap bd-grid">
-          {filtered.map((p) => (
-            <PostCard key={p.id} post={p} />
-          ))}
-        </div>
-      </section>
-    </div>
-  );
+      <ListSection>
+        <Wrapper>
+          <Grid>
+            {filtered.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </Grid>
+        </Wrapper>
+      </ListSection>
+    </>
+  )
 }

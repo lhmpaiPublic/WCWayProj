@@ -35,9 +35,7 @@ export default function HeaderWrapper() {
 
   return (
     <HeaderRoot>
-      <Typography variant="h5">
-        공중 화장실 위치 정보 서비스
-      </Typography>
+      <Typography variant="h5">공중 화장실 위치 정보 서비스</Typography>
       <Breadcrumbs>
         <Typography variant="h6" component={Link} to="/">
           HOME
@@ -47,6 +45,9 @@ export default function HeaderWrapper() {
         </Typography>
         <Typography variant="h6" component={Link} to="/board">
           게시판
+        </Typography>
+        <Typography variant="h6" component={Link} to="/chatbot">
+          챗봇
         </Typography>
       </Breadcrumbs>
       <Box>

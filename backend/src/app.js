@@ -13,10 +13,12 @@ const notFoundRouter = require("./routes/not-found-mw")
 const bookRouter = require("./routes/book-router")
 const publicRouter = require("./routes/public-router")
 const fileUploadRouter = require("./routes/fileUploadrRouter")
+const chatbotRouter = require("./routes/chatbot-router")
 
 app.use("/upload", fileUploadRouter)
 app.use("/book", bookRouter)
 app.use("/public", publicRouter)
+app.use("/chatbot", chatbotRouter)
 
 app.get("/login", (req, res, next) => {
   const { usrId, usrPw } = req.query
@@ -28,13 +30,7 @@ app.get("/login", (req, res, next) => {
 })
 
 app.get("/join", (req, res) => {
-  const {
-    usrNm,
-    usrId,
-    usrPw,
-    usrEmail,
-  }=
-    req.body
+  const { usrNm, usrId, usrPw, usrEmail } = req.body
 
   const msg = "회원가입 성공"
   res.status(200).json({
@@ -53,13 +49,7 @@ app.post("/login", (req, res) => {
 })
 
 app.post("/join", (req, res) => {
-  const {
-    usrNm,
-    usrId,
-    usrPw,
-    usrEmail,
-  } =
-    req.body
+  const { usrNm, usrId, usrPw, usrEmail } = req.body
 
   const msg = "회원가입 성공"
   res.status(200).json({

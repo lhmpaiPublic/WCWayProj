@@ -7,6 +7,7 @@ import LoginPage from "./pages/Login"
 import HOME from "./pages/Home"
 import Board from "./pages/Board"
 import Features from "./pages/Features"
+import Chatbot from "./pages/Chatbot"
 
 const RoutesWrapper = styled.div`
   padding-top: 2em;
@@ -27,14 +28,15 @@ export default function Containers() {
           <Route path="/board" element={<Board />} />
           <Route path="/join" element={<JoinPage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/chatbot" element={<Chatbot />} />
         </Routes>
       </RoutesWrapper>
       <FooterWrapper>
-      <footer className="footer">
-         <div>
-           <h2>가장 가까운 공중 화장실 정보를 쉽고 빠르게 찾아주는 서비스.</h2>
-         </div>
-      </footer>
+        <footer className="footer">
+          <div>
+            <h2>가장 가까운 공중 화장실 정보를 쉽고 빠르게 찾아주는 서비스.</h2>
+          </div>
+        </footer>
       </FooterWrapper>
     </Container>
   )

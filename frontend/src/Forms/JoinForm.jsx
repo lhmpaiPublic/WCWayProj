@@ -51,7 +51,7 @@ export default function JoinForm() {
     setForm((prev) => ({ ...prev, [name]: value }))
   }
 
-  const createUser = ()=> {
+  const createUser = () => {
     return new Promise(async (resolve) => {
       //const { usrNm, usrId, usrPw, usrPwRe, usrEmail } = data;
       console.log("User form:", form)
@@ -65,12 +65,14 @@ export default function JoinForm() {
         // Replace with your actual axios call
         // await axios.post('/api/users', { usrNm, usrId, usrPw, usrEmail });
 
+        debugger
         const result = await apiPost("/join", form)
         console.log("User created:", result)
 
         // Reset form on success
         resolve(!formState)
       } catch (error) {
+        debugger
         console.error("User creation failed:", error)
         // Optionally return previous form state to preserve user input
         resolve(!formState)

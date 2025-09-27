@@ -1,107 +1,108 @@
-import { useState, useActionState, useEffect, useContext } from "react";
-import Button from "@mui/material/Button";
-import styled from "@emotion/styled";
-import { api } from "../common/axiosapi";
-import { AlertContext } from "../Providers/AlertProvider";
-import { localLogOn } from "../stores/auth-slice";
+import { useState, useActionState, useEffect, useContext } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import Button from "@mui/material/Button"
+import styled from "@emotion/styled"
+import { api } from "../common/axiosapi"
+import { AlertContext } from "../Providers/AlertProvider"
+import { localLogOn } from "../stores/auth-slice"
 
 const FormWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   height: 80vh;
-`;
+`
 const Title = styled.h2`
   font-size: 2em;
   padding: 0.5em 0;
   border-bottom: 1px solid #eee;
   text-align: center;
-`;
+`
 const FormWrap = styled.form`
   max-width: 500px;
   padding: 0.5em;
   border: 1px solid #eee;
   margin-bottom: 1em;
-`;
+`
 const FormList = styled.div`
   display: flex;
   align-items: center;
   border-bottom: 1px solid #eee;
   padding: 0.5em 0;
-`;
+`
 const FormListTitle = styled.div`
   font-weight: bold;
   color: #333;
   flex-grow: 1;
   width: 150px;
-`;
+`
 const Input = styled.input`
   padding: 0.75em !important;
   border: 1px solid #aaa !important;
   flex-grow: 3;
-`;
+`
 const ButtonWrap = styled.div`
   display: flex;
   justify-content: center;
   padding: 1em;
-`;
+`
 
 // Initial form state
-const initialActionState = false;
+const initialActionState = false
 const initialFormState = {
   usrId: "",
   usrPw: "",
-};
+}
 
 export default function LoginForm() {
-  const [form, setForm] = useState(initialFormState);
-  const { setIsAlertOpen, setAlertMsg } = useContext(AlertContext);
+  const [form, setForm] = useState(initialFormState)
+  const { setIsAlertOpen, setAlertMsg } = useContext(AlertContext)
 
-  const dispatch = useAppDispatch()
-  const { localUser , isLocalLogOn } = useAppSelector((state) => state.auth)
+  const dispatch = useDispatch()
+  const { localUser, isLocalLogOn } = useSelector((state) => state.auth)
 
   const onChangeForm = (e) => {
     const {
       currentTarget: { name, value },
-    } = e;
-    setForm((prev) => ({ ...prev, [name]: value }));
-    console.log("User usrId:", name, value);
-  };
+    } = e
+    setForm((prev) => ({ ...prev, [name]: value }))
+    console.log("User usrId:", name, value)
+  }
 
-  const loginUser = async ()=> {
+  const loginUser = async () => {
     return new Promise(async (resolve) => {
       if (form.usrId === "" || form.usrPw === "") {
-        resolve(false);
+        resolve(false)
       }
       try {
         // Replace with your actual axios call
         // await axios.post('/api/users', { usrNm, usrId, usrPw, usrEmail });
 
-        const result = await api("/login", form);
-        console.log("User created:", result);
+        const result = await api("/login", form)
+        console.log("User created:", result)
+        debugger
 
         // Reset form on success
-        resolve(!formState);
+        resolve(!formState)
       } catch (error) {
-        console.error("User creation failed:", error);
+        debugger
+        console.error("User creation failed:", error)
         // Optionally return previous form state to preserve user input
-        resolve(!formState);
+        resolve(!formState)
       }
-    });
-  };
+    })
+  }
 
-  const [formState, formAction] = useActionState(loginUser, initialActionState);
+  const [formState, formAction] = useActionState(loginUser, initialActionState)
 
   useEffect(() => {
-    console.log("User useEffect:", formState);
-    console.log("User state:", isLocalLogOn, localUser.id);
-    dispatch(
-      localLogOn({id:"vawing21" })
-    );
-    console.log("User state:", isLocalLogOn, localUser.id);
-    setIsAlertOpen(true);
-    setAlertMsg("LOGIN 완료");
-  }, [formState]);
+    console.log("User useEffect:", formState)
+    console.log("User state:", isLocalLogOn, localUser.id)
+    dispatch(localLogOn({ id: "vawing21" }))
+    console.log("User state:", isLocalLogOn, localUser.id)
+    setIsAlertOpen(true)
+    setAlertMsg("LOGIN 완료")
+  }, [formState])
 
   return (
     <FormWrapper>
@@ -132,5 +133,5 @@ export default function LoginForm() {
         </ButtonWrap>
       </FormWrap>
     </FormWrapper>
-  );
+  )
 }

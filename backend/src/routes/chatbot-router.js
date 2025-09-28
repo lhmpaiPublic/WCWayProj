@@ -11,7 +11,7 @@ router.get("/", (req, res, next) => {
     resMsg: {
       stat: stat,
       input: input,
-      text: text,
+      inputMsg: text,
     },
   })
 })

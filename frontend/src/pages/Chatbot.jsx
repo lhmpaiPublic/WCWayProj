@@ -1,5 +1,5 @@
 // Chatbot.jsx
-import { useState } from "react"
+import { useState, useActionState, useEffect } from "react"
 import { Box, Typography, TextField, IconButton, Paper } from "@mui/material"
 import SendIcon from "@mui/icons-material/Send"
 import styled from "@emotion/styled"
@@ -41,7 +41,10 @@ const InputArea = styled(Box)`
   background-color: #fff;
 `
 
-const InputReqMsg = ["시 또는 도", "군 또는 시", "동"]
+// Initial form state
+const initialActionState = false
+
+const InputReqMsg = ["군 또는 시 ", "동 "]
 
 export default function Chatbot() {
   const [messages, setMessages] = useState([
@@ -58,25 +61,8 @@ export default function Chatbot() {
   const [inputMsg, SetInputMsg] = useState("")
   const [count, setCount] = useState(0)
 
-  const handleSend = () => {
-    const newMessages = [
-      ...messages,
-      {
-        fromUser: true,
-        text: `${input.trim()}을 입력하셨습니다.`,
-      },
-    ]
-    debugger
-    setMessages(newMessages)
-
-    const newMsg = [...inputMsg, ` ${input.trim()}`]
-    SetInputMsg(newMsg)
-    setInput("")
-  }
-
   const handleRecive = (result) => {
-    debugger
-    if (count >= 3) {
+    if (count >= 2) {
       const newMessages = [
         ...messages,
         {
@@ -88,25 +74,35 @@ export default function Chatbot() {
       ]
       setCount(0)
       setMessages(newMessages)
+      setInput("")
     } else {
+      const newMsg = inputMsg.concat(input.trim())
+      SetInputMsg(newMsg)
       const newMessages = [
         ...messages,
         {
+          fromUser: false,
+          text: `${newMsg}을(를) 입력하셨습니다.`,
+        },
+        {
           fromUser: true,
-          text: `${result.inputMsg}에는 ${InputReqMsg[count]}가  ${Number(
+          text: `${result.input}에는 ${InputReqMsg[count]}가(이)  ${Number(
             result.stat
           )} 개 있습니다.`,
         },
+        {
+          fromUser: false,
+          text: `${InputReqMsg[count]}를(을) 입력하세요!!`,
+        },
       ]
       setMessages(newMessages)
+      setInput("")
     }
   }
 
   const chatbotMsg = () => {
     return new Promise(async (resolve) => {
-      handleSend()
       try {
-        debugger
         const result = await api("/chatbot", {
           stat: Math.floor(Math.random() * 10),
           input: `${input}`,
@@ -133,6 +129,12 @@ export default function Chatbot() {
       chatbotMsg()
     }
   }
+
+  const [formState, formAction] = useActionState(chatbotMsg, initialActionState)
+
+  useEffect(() => {
+    console.log("chatbot useEffect:", formState)
+  }, [formState])
 
   return (
     <ChatContainer elevation={3}>

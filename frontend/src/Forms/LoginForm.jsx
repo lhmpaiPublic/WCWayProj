@@ -2,7 +2,7 @@ import { useState, useActionState, useEffect, useContext } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import Button from "@mui/material/Button"
 import styled from "@emotion/styled"
-import { api } from "../common/axiosapi"
+import { apiPost } from "../common/axiosapi"
 import { AlertContext } from "../Providers/AlertProvider"
 import { localLogOn } from "../stores/auth-slice"
 
@@ -78,7 +78,7 @@ export default function LoginForm() {
         // Replace with your actual axios call
         // await axios.post('/api/users', { usrNm, usrId, usrPw, usrEmail });
 
-        const result = await api("/login", form)
+        const result = await apiPost("/public/login", form)
         console.log("User created:", result)
         debugger
 

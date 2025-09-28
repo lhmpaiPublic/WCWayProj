@@ -6,6 +6,7 @@ const joinCreateValidation = () => {
     body("usrPw").notEmpty().trim().isLength({ min: 6, max: 16 }),
     body("usrNm").notEmpty().trim(),
     body("usrEmail").notEmpty().trim().isEmail(),
+    body("usrAddr").notEmpty().trim(),
     (req, res, next) => {
       const err = validationResult(req)
       if (err.isEmpty()) next()

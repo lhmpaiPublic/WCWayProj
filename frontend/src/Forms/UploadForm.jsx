@@ -26,7 +26,7 @@ const Input = styled.input`
 // Initial form state
 const initialActionState = false
 
-export default function UploadForm({setVal} ) {
+export default function UploadForm({ setVal }) {
   const [upfile, setUpfile] = useState(null)
   const { setIsAlertOpen, setAlertMsg } = useContext(AlertContext)
   const [form, setForm] = useState({
@@ -62,7 +62,6 @@ export default function UploadForm({setVal} ) {
           formData.append("upfile", upfile[0])
           console.log(upfile)
         }
-        debugger
         const rs = await apiFile("/upload", formData)
         if (rs?.success === "OK") {
           console.log("User created:")

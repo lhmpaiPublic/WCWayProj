@@ -1,10 +1,6 @@
 const { pool } = require("./mysql-conn")
 const bcrypt = require("bcrypt")
-const {
-  isVerifyRefresh,
-  updateToken,
-  getSignData,
-}  = require("../common/token")
+const { isVerifyRefresh, updateToken, getSignData } = require("../common/token")
 // const jwt = require("jsonwebtoken")
 // const sqlstring = require("sqlstring")
 // const Redis = require("ioredis")
@@ -17,8 +13,8 @@ const refreshToken = () => {
       {
         // 갱신
         if (await isVerifyRefresh(refreshToken)) {
-          const tokenData = getSignData(refreshToken);
-          req.params.rs = updateToken(tokenData);
+          const tokenData = getSignData(refreshToken)
+          req.params.rs = updateToken(tokenData)
           return next()
         }
         const errData = {
@@ -32,13 +28,13 @@ const refreshToken = () => {
       }
     } catch (err) {
       const errData = {
-          name: "REFRESH_TOKEN_FAILE",
-          message: "Refresh Token 요청을 찾을 수 없습니다",
-          status: 200,
-          cod: 112,
-          data: err,
-        }
-        return next(errData)
+        name: "REFRESH_TOKEN_FAILE",
+        message: "Refresh Token 요청을 찾을 수 없습니다",
+        status: 200,
+        cod: 112,
+        data: err,
+      }
+      return next(errData)
     }
     next()
   }
@@ -47,7 +43,7 @@ const refreshToken = () => {
 const createUser = () => {
   return async (req, res, next) => {
     try {
-      const { usrId, usrPw, usrNm, usrEmail } = req.body
+      const { usrId, usrPw, usrNm, usrEmail, usrAddr } = req.body
       const sql = `SELECT COUNT(id) AS count FROM user WHERE usr_id=? OR usr_email=?`
       const [rs] = await pool.execute(sql, [usrId, usrEmail])
       if (rs[0].count > 0) {
@@ -65,26 +61,27 @@ const createUser = () => {
       const usrPwHash = await bcrypt.hash(usrPw, Number(process.env.SALT_RND))
       const sqlIsert = `
       INSERT INTO user 
-        (usr_id, usr_pw, usr_nm, usr_email) 
+        (usr_id, usr_pw, usr_nm, usr_email, usr_addr) 
       VALUES 
-        (?, ?, ?, ?)`
+        (?, ?, ?, ?, ?)`
       const [rsInsert] = await pool.execute(sqlIsert, [
         usrId,
         usrPwHash,
         usrNm,
         usrEmail,
+        usrAddr,
       ])
       req.params.rs = rsInsert
       return next()
     } catch (err) {
       const errData = {
-          name: "CREATEUSER_FAILE",
-          message: "Creagte user 요청을 찾을 수 없습니다",
-          status: 200,
-          cod: 112,
-          data: err,
-        }
-        return next(errData)
+        name: "CREATEUSER_FAILE",
+        message: "Creagte user 요청을 찾을 수 없습니다",
+        status: 200,
+        cod: 112,
+        data: err,
+      }
+      return next(errData)
     }
   }
 }
@@ -117,21 +114,21 @@ const loginUser = () => {
         }
       }
       const errData = {
-          name: "LOGIN_FAIL",
-          message: "Login 실패",
-          status: 200,
-          cod: 112,
-        }
-        return next(errData)
+        name: "LOGIN_FAIL",
+        message: "Login 실패",
+        status: 200,
+        cod: 112,
+      }
+      return next(errData)
     } catch (err) {
       const errData = {
-          name: "LOGIN_FAILE",
-          message: "Login 요청을 찾을 수 없습니다",
-          status: 200,
-          cod: 112,
-          data: err,
-        }
-        return next(errData)
+        name: "LOGIN_FAILE",
+        message: "Login 요청을 찾을 수 없습니다",
+        status: 200,
+        cod: 112,
+        data: err,
+      }
+      return next(errData)
     }
   }
 }

@@ -80,7 +80,6 @@ export default function LoginForm() {
 
         const result = await apiPost("/public/login", form)
         console.log("User created:", result)
-        debugger
 
         // Reset form on success
         resolve(!formState)

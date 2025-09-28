@@ -65,8 +65,7 @@ export default function JoinForm() {
         // Replace with your actual axios call
         // await axios.post('/api/users', { usrNm, usrId, usrPw, usrEmail });
 
-        debugger
-        const result = await apiPost("/join", form)
+        const result = await apiPost("/public/join", form)
         console.log("User created:", result)
 
         // Reset form on success
@@ -133,6 +132,15 @@ export default function JoinForm() {
             type="text"
             name="usrEmail"
             value={form.usrEmail}
+            onChange={onChangeForm}
+          />
+        </FormList>
+        <FormList>
+          <FormListTitle>주소</FormListTitle>
+          <Input
+            type="text"
+            name="usrAddr"
+            value={form.usrAddr}
             onChange={onChangeForm}
           />
         </FormList>

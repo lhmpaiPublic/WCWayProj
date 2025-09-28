@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState } from "react"
+import { apiPost } from "../common/axiosapi"
 
 export default function SignUp() {
   const [form, setForm] = useState({
@@ -8,59 +9,49 @@ export default function SignUp() {
     password: "",
     confirm: "",
     agree: false,
-  });
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  })
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState("")
 
   const onChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }));
-  };
+    const { name, value, type, checked } = e.target
+    setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }))
+  }
 
   const onSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    if (!form.name || !form.email || !form.password || !form.confirm) {
-      setMessage("모든 필드를 입력해주세요.");
-      return;
+    e.preventDefault()
+    setMessage("")
+    if (!form.usrNm || !form.usrEmail || !form.usrPw || !form.usrPwRe) {
+      setMessage("모든 필드를 입력해주세요.")
+      return
     }
-    if (form.password !== form.confirm) {
-      setMessage("비밀번호가 일치하지 않습니다.");
-      return;
+    if (form.usrPw !== form.usrPwRe) {
+      setMessage("비밀번호가 일치하지 않습니다.")
+      return
     }
     if (!form.agree) {
-      setMessage("개인 정보 처리 방침에 동의해주세요.");
-      return;
+      setMessage("개인 정보 처리 방침에 동의해주세요.")
+      return
     }
     try {
-      setLoading(true);
-      const res = await fetch("/api/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: form.name,
-          address: form.address,
-          email: form.email,
-          password: form.password,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.message || "회원가입 실패");
-      setMessage("가입이 완료되었습니다. 로그인해주세요.");
+      setLoading(true)
+      const res = await apiPost("/public/join", form)
+      onsole.log("User created:", res)
       setForm({
-        name: "",
-        address: "",
-        email: "",
-        password: "",
-        confirm: "",
+        usrNm: "",
+        usrId: "",
+        usrAddr: "",
+        usrEmail: "",
+        usrPw: "",
+        usrPwRe: "",
         agree: false,
-      });
+      })
     } catch (err) {
-      setMessage(err.message);
+      setMessage(err.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="signup-page">
@@ -70,38 +61,45 @@ export default function SignUp() {
           <p className="su-desc">계정을 생성하여 서비스를 이용하세요.</p>
           <label className="su-label">사용자 이름</label>
           <input
-            name="name"
-            value={form.name}
+            name="usrNm"
+            value={form.usrNm}
+            onChange={onChange}
+            placeholder="사용자 이름"
+          />
+          <label className="su-label">아이디</label>
+          <input
+            name="usrId"
+            value={form.usrId}
             onChange={onChange}
             placeholder="사용자 이름"
           />
           <label className="su-label">주소</label>
           <input
-            name="address"
-            value={form.address}
+            name="usrAddr"
+            value={form.usrAddr}
             onChange={onChange}
             placeholder="ex) 서울특별시 강남구 테헤란로 1234"
           />
           <label className="su-label">이메일</label>
           <input
-            name="email"
-            value={form.email}
+            name="usrEmail"
+            value={form.usrEmail}
             onChange={onChange}
             placeholder="email@example.com"
           />
           <label className="su-label">비밀번호</label>
           <input
-            name="password"
+            name="usrPw"
             type="password"
-            value={form.password}
+            value={form.usrPw}
             onChange={onChange}
             placeholder="********"
           />
           <label className="su-label">비밀번호 확인</label>
           <input
-            name="confirm"
+            name="usrPwRe"
             type="password"
-            value={form.confirm}
+            value={form.usrPwRe}
             onChange={onChange}
             placeholder="********"
           />
@@ -146,5 +144,5 @@ export default function SignUp() {
         </aside>
       </div>
     </div>
-  );
+  )
 }

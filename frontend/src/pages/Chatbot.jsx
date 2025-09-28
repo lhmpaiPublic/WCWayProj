@@ -59,56 +59,70 @@ export default function Chatbot() {
   const [count, setCount] = useState(0)
 
   const handleSend = () => {
-    if (!input.trim()) return false
-
-    const newMessages = [
-      ...messages,
-      { fromUser: false, text: `${input.trim()}를 입력하셨습니다. ` },
-    ]
-
-    const newMsg = [...inputMsg, ` ${input.trim()}`]
-    SetInputMsg(newMsg)
-
-    setMessages(newMessages)
-    setInput("")
-
-    return true
-  }
-
-  const handleRecive = (result) => {
     const newMessages = [
       ...messages,
       {
         fromUser: true,
-        text: `${result.input}에는 ${InputReqMsg[count]}가  ${Number(
-          result.stat
-        )} 개 있습니다.`,
+        text: `${input.trim()}을 입력하셨습니다.`,
       },
     ]
+    debugger
     setMessages(newMessages)
+
+    const newMsg = [...inputMsg, ` ${input.trim()}`]
+    SetInputMsg(newMsg)
+    setInput("")
+  }
+
+  const handleRecive = (result) => {
+    debugger
+    if (count >= 3) {
+      const newMessages = [
+        ...messages,
+        {
+          fromUser: true,
+          text: `${result.input}에는 화장실이  ${Number(
+            result.stat
+          )} 개 있습니다.`,
+        },
+      ]
+      setCount(0)
+      setMessages(newMessages)
+    } else {
+      const newMessages = [
+        ...messages,
+        {
+          fromUser: true,
+          text: `${result.inputMsg}에는 ${InputReqMsg[count]}가  ${Number(
+            result.stat
+          )} 개 있습니다.`,
+        },
+      ]
+      setMessages(newMessages)
+    }
   }
 
   const chatbotMsg = () => {
     return new Promise(async (resolve) => {
-      if (handleSend()) {
-        try {
-          const result = await api("/chatbot", {
-            stat: Math.floor(Math.random() * 100),
-            input: `${input}`,
-            text: `${inputMsg}`,
-          })
-          const { resMsg } = result
-          handleRecive(resMsg)
-          console.log("chatbot:", result)
+      handleSend()
+      try {
+        debugger
+        const result = await api("/chatbot", {
+          stat: Math.floor(Math.random() * 10),
+          input: `${input}`,
+          text: `${inputMsg}`,
+        })
+        const { resMsg } = result
+        handleRecive(resMsg)
+        console.log("chatbot:", result)
 
-          setCount(Number(count + 1))
-          // Reset form on success
-          resolve(!formState)
-        } catch (error) {
-          console.log("chatbot failed:", error)
-          // Optionally return previous form state to preserve user input
-          resolve(!formState)
-        }
+        setCount(Number(count + 1))
+        // Reset form on success
+        resolve(!formState)
+      } catch (error) {
+        console.log("chatbot failed:", error)
+        // Optionally return previous form state to preserve user input
+        resolve(!formState)
       }
     })
   }

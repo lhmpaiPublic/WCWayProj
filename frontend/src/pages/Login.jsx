@@ -24,7 +24,6 @@ export default function Login() {
     try {
       setLoading(true)
       const result = await apiPost("/public/login", form)
-      debugger
       console.log("User created:", result)
     } catch (err) {
       setMessage(err.message)

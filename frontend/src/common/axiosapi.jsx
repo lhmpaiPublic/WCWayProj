@@ -209,6 +209,7 @@ export const api = async (url, params, config) => {
     ...config,
     params,
   }
+  debugger
   const response = await instance.get(url, reqConfig)
   return response?.data || null
 }

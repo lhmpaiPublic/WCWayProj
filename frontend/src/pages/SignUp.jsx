@@ -3,11 +3,12 @@ import { apiPost } from "../common/axiosapi"
 
 export default function SignUp() {
   const [form, setForm] = useState({
-    name: "",
-    address: "",
-    email: "",
-    password: "",
-    confirm: "",
+    usrNm: "",
+    usrId: "",
+    usrAddr: "",
+    usrEmail: "",
+    usrPw: "",
+    usrPwRe: "",
     agree: false,
   })
   const [loading, setLoading] = useState(false)

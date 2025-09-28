@@ -89,9 +89,9 @@ const createUser = () => {
 const loginUser = () => {
   return async (req, res, next) => {
     try {
-      const { usrId, usrPw } = req.body
-      const sql = `SELECT * FROM user WHERE usr_id=?`
-      const [rs] = await pool.execute(sql, [usrId])
+      const { usrEmail, usrPw } = req.body
+      const sql = `SELECT * FROM user WHERE usr_email=?`
+      const [rs] = await pool.execute(sql, [usrEmail])
       if (rs[0]) {
         const compare = await bcrypt.compare(usrPw, rs[0].usr_pw)
         if (compare) {

@@ -1,34 +1,37 @@
-import { useState } from "react";
+import { useState } from "react"
+import { apiPost } from "../common/axiosapi"
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
+  const [form, setForm] = useState({
+    usrEmail: "",
+    usrPw: "",
+  })
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState("")
+
+  const onChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }))
+  }
 
   const onSubmit = async (e) => {
-    e.preventDefault();
-    setMessage("");
-    if (!email || !password) {
-      setMessage("이메일과 비밀번호를 입력해주세요.");
-      return;
+    e.preventDefault()
+    setMessage("")
+    if (!form.usrEmail || !form.usrPw) {
+      setMessage("이메일과 비밀번호를 입력해주세요.")
+      return
     }
     try {
-      setLoading(true);
-      const res = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data?.message || "로그인 실패");
-      setMessage("로그인 성공! 환영합니다.");
+      setLoading(true)
+      const result = await apiPost("/public/login", form)
+      debugger
+      console.log("User created:", result)
     } catch (err) {
-      setMessage(err.message);
+      setMessage(err.message)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="login-page">
@@ -45,15 +48,17 @@ export default function Login() {
           <p className="su-desc">계정에 로그인하여 서비스를 이용하세요.</p>
           <label className="su-label">이메일</label>
           <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name="usrEmail"
+            value={form.usrEmail}
+            onChange={onChange}
             placeholder="이메일"
           />
           <label className="su-label">비밀번호</label>
           <input
+            name="usrPw"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={form.usrPw}
+            onChange={onChange}
             placeholder="비밀번호"
           />
           <div style={{ textAlign: "right", fontSize: 12, color: "#666" }}>
@@ -76,5 +81,5 @@ export default function Login() {
         </form>
       </div>
     </div>
-  );
+  )
 }

@@ -2,28 +2,31 @@ import { useEffect, useMemo, useState } from "react";
 import { KakaoMap } from "../components/KakaoMap";
 import { ToiletList } from "../components/ToiletList";
 import { fetchToilets } from "../services/publicToilet";
+import loactionjson from "../mock/korea_locations.json";
 
 export default function Home() {
   const [selectedSido, setSelectedSido] = useState("서울특별시");
-  const [selectedGu, setSelectedGu] = useState("강남구");
+  const [selectedGu, setSelectedGu] = useState("");
   const [keyword, setKeyword] = useState("");
   const [toilets, setToilets] = useState([]);
   const [focused, setFocused] = useState(null);
+  const [Gulist, setGulist] = useState([]);
 
-  useEffect(() => {
-    let ignore = false;
-    (async () => {
-      try {
-        const list = await fetchToilets({ sido: selectedSido, gu: selectedGu });
-        if (!ignore) setToilets(list);
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-    return () => {
-      ignore = true;
-    };
-  }, [selectedSido, selectedGu]);
+  const [jsonstat, setJsonStat] = useState(loactionjson);
+  const GuList = (city) => jsonstat.filter((word) => word.city === city);
+
+  useEffect(() => {}, [selectedGu]);
+
+  useEffect(
+    () => {
+      console.log("aaaa");
+      const d = GuList(selectedSido)[0].districts;
+      setSelectedGu(d[0]);
+      setGulist(d);
+    },
+    [selectedSido],
+    []
+  );
 
   const filtered = useMemo(() => {
     const term = keyword.trim();
@@ -45,6 +48,7 @@ export default function Home() {
           onChangeKeyword={setKeyword}
           toilets={filtered}
           onSelect={setFocused}
+          guList={Gulist}
         />
       </section>
       <section className="right">
@@ -53,4 +57,3 @@ export default function Home() {
     </main>
   );
 }
-

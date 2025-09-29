@@ -56,6 +56,7 @@ export default function ErrorFallback({
         <Button
           onClick={onReset}
           variant="outlined"
+          
           color="warning"
           style={{ marginTop: "1em" }}
         >

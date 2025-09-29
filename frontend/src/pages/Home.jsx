@@ -3,6 +3,7 @@ import { KakaoMap } from "../components/KakaoMap";
 import { ToiletList } from "../components/ToiletList";
 import { fetchToilets } from "../services/publicToilet";
 import loactionjson from "../mock/korea_locations.json";
+import { api } from "../common/axiosapi";
 
 export default function Home() {
   const [selectedSido, setSelectedSido] = useState("서울특별시");
@@ -15,9 +16,13 @@ export default function Home() {
   const [jsonstat, setJsonStat] = useState(loactionjson);
   const GuList = (city) => jsonstat.filter((word) => word.city === city);
 
-  useEffect(() => {
-    console.log("selectedGu", selectedGu);
-  }, [selectedGu]);
+  useEffect(
+    () => {
+      toiletreq();
+    },
+    [selectedGu],
+    []
+  );
 
   useEffect(
     () => {
@@ -29,6 +34,31 @@ export default function Home() {
     [selectedSido],
     []
   );
+
+  const toiletreq = () => {
+    return new Promise(async (resolve) => {
+      if (selectedSido === "" || selectedGu === "") {
+        resolve(false);
+      } else {
+        try {
+          debugger;
+          const { data } = await api("/home", {
+            si: selectedSido,
+            gu: selectedGu,
+          });
+          //setToilets(result.data.list)
+
+          console.log("User created:", data);
+
+          resolve(true);
+        } catch (error) {
+          debugger;
+          console.error("User creation failed:", error);
+          resolve(false);
+        }
+      }
+    });
+  };
 
   const filtered = useMemo(() => {
     const term = keyword.trim();

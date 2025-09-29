@@ -15,7 +15,9 @@ export default function Home() {
   const [jsonstat, setJsonStat] = useState(loactionjson);
   const GuList = (city) => jsonstat.filter((word) => word.city === city);
 
-  useEffect(() => {}, [selectedGu]);
+  useEffect(() => {
+    console.log("selectedGu", selectedGu);
+  }, [selectedGu]);
 
   useEffect(
     () => {

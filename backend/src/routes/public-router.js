@@ -1,18 +1,12 @@
-const express = require("express")
-const router = express.Router()
-const {
-  joinCreateValidation,
-} = require("../validation/join-validation")
-const {
-  createUser,
-  loginUser,
-  refreshToken,
-} = require("../mysql/public-svc")
+const express = require("express");
+const router = express.Router();
+const { joinCreateValidation } = require("../validation/join-validation");
+const { createUser, loginUser, refreshToken } = require("../mysql/public-svc");
 
 // TODO :: 추후 구현
 router.get("/", (req, res, next) => {
-  res.status(200).json({ success: "OK" })
-})
+  res.status(200).json({ success: "OK" });
+});
 
 /**
  * TODO :: bcrypt(암호화)
@@ -23,8 +17,8 @@ router.get("/", (req, res, next) => {
  * 5. success: "OK"
  */
 router.post("/join", joinCreateValidation(), createUser(), (req, res, next) => {
-  res.status(200).json({ success: "OK" })
-})
+  res.status(200).json({ success: "OK" });
+});
 
 /**
  * TODO :: jsonwebtoken(토큰생성), redis(refreshToken저장)
@@ -42,11 +36,11 @@ router.post("/join", joinCreateValidation(), createUser(), (req, res, next) => {
  *   2-2. 프론트 다시 1-1
  */
 router.post("/login", loginUser(), (req, res, next) => {
-  res.status(200).json({ success: "OK", data: req.params.rs })
-})
+  res.status(200).json({ success: "OK", data: req.params.rs });
+});
 
 router.post("/refresh", refreshToken(), (req, res, next) => {
-  res.status(200).json({ success: "OK", data: req.params.rs })
-})
+  res.status(200).json({ success: "OK", data: req.params.rs });
+});
 
-module.exports = router
+module.exports = router;

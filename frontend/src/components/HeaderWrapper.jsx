@@ -10,6 +10,8 @@ import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { localLogOut } from "../stores/auth-slice";
 
 const HeaderRoot = styled.div`
   display: flex;
@@ -28,6 +30,9 @@ const HeaderRoot = styled.div`
 
 export default function HeaderWrapper() {
   const navigate = useNavigate();
+
+  const { isLocalLogOn } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // console.log("로그인상태: ", isLogOn)
@@ -51,23 +56,33 @@ export default function HeaderWrapper() {
         </Typography>
       </Breadcrumbs>
       <Box>
-        <Button
-          variant="outlined"
-          sx={{ mr: 2 }}
-          onClick={() => navigate("/join")}
-        >
-          회원가입
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{ mr: 2 }}
-          onClick={() => navigate("/login")}
-        >
-          로그인
-        </Button>
-        <Button variant="outlined" sx={{ mr: 2 }}>
-          로그아웃
-        </Button>
+        {!isLocalLogOn ? (
+          <Button
+            variant="outlined"
+            sx={{ mr: 2 }}
+            onClick={() => navigate("/join")}
+          >
+            회원가입
+          </Button>
+        ) : null}
+        {!isLocalLogOn ? (
+          <Button
+            variant="outlined"
+            sx={{ mr: 2 }}
+            onClick={() => navigate("/login")}
+          >
+            로그인
+          </Button>
+        ) : null}
+        {isLocalLogOn ? (
+          <Button
+            variant="outlined"
+            sx={{ mr: 2 }}
+            onClick={dispatch(localLogOut())}
+          >
+            로그아웃
+          </Button>
+        ) : null}
         <FormControlLabel
           control={<Switch onChange={() => navigate("/login")} name="theme" />}
           label="Theme"

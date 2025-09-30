@@ -1,36 +1,41 @@
-import { useState } from "react"
-import { apiPost } from "../common/axiosapi"
+import { useState } from "react";
+import { apiPost } from "../common/axiosapi";
+import { useDispatch } from "react-redux";
+import { localLogOn } from "../stores/auth-slice";
 
 export default function Login() {
   const [form, setForm] = useState({
     usrEmail: "",
     usrPw: "",
-  })
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState("")
+  });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const dispatch = useDispatch();
 
   const onChange = (e) => {
-    const { name, value, type, checked } = e.target
-    setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }))
-  }
+    const { name, value, type, checked } = e.target;
+    setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }));
+  };
 
   const onSubmit = async (e) => {
-    e.preventDefault()
-    setMessage("")
+    e.preventDefault();
+    setMessage("");
     if (!form.usrEmail || !form.usrPw) {
-      setMessage("이메일과 비밀번호를 입력해주세요.")
-      return
+      setMessage("이메일과 비밀번호를 입력해주세요.");
+      return;
     }
     try {
-      setLoading(true)
-      const result = await apiPost("/public/login", form)
-      console.log("User created:", result)
+      setLoading(true);
+      const result = await apiPost("/public/login", form);
+      if (result.success === "OK")
+        dispatch(localLogOn(result?.data?.user || {}));
+      console.log("User created:", result);
     } catch (err) {
-      setMessage(err.message)
+      setMessage(err.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="login-page">
@@ -80,5 +85,5 @@ export default function Login() {
         </form>
       </div>
     </div>
-  )
+  );
 }

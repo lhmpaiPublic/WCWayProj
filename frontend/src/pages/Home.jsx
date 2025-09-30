@@ -41,15 +41,20 @@ export default function Home() {
         resolve(false);
       } else {
         try {
-          debugger;
           const { data } = await api("/home", {
             si: selectedSido,
             gu: selectedGu,
           });
-          //setToilets(result.data.list)
 
           console.log("User created:", data);
-
+          const rss = data.list.map((dt) => ({
+            id: dt.id,
+            name: dt.name,
+            roadAddress: dt.addr || dt.road_addr,
+            latitude: dt.lat,
+            longitude: dt.long,
+          }));
+          setToilets(rss);
           resolve(true);
         } catch (error) {
           debugger;

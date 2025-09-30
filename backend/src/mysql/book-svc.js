@@ -2,9 +2,7 @@ const { pool } = require("./mysql-conn")
 const { createVirtualPath } = require("../common/util")
 
 const bookList = ({ field = "id", sort = "DESC" } = {}) => {
-  return async (req,
-    res,
-    next) => {
+  return async (req, res, next) => {
     try {
       const pageCnt = 10
       const page = parseInt(req.query.page || "1", 10)
@@ -24,13 +22,13 @@ const bookList = ({ field = "id", sort = "DESC" } = {}) => {
       next()
     } catch (err) {
       const errData = {
-          name: "BOOK_ACCDB_FILE",
-          message: "BOOK 요청을 찾을 수 없습니다",
-          status: 200,
-          cod: 112,
-          data: err,
-        }
-        return next(errData)
+        name: "BOOK_ACCDB_FILE",
+        message: "BOOK 요청을 찾을 수 없습니다",
+        status: 200,
+        cod: 112,
+        data: err,
+      }
+      return next(errData)
     }
   }
 }
@@ -63,13 +61,13 @@ const bookCreate = () => {
       next()
     } catch (err) {
       const errData = {
-          name: "BOOK_ACCDB_FILE",
-          message: "BOOK 요청을 찾을 수 없습니다",
-          status: 200,
-          cod: 112,
-          data: err
-        }
-        return next(errData)
+        name: "BOOK_ACCDB_FILE",
+        message: "BOOK 요청을 찾을 수 없습니다",
+        status: 200,
+        cod: 112,
+        data: err,
+      }
+      return next(errData)
     }
   }
 }

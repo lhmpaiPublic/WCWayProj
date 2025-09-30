@@ -1,10 +1,11 @@
 /* global kakao */
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function KakaoMap({ toilets, focused }) {
   const mapRef = useRef(null);
   const mapObj = useRef(null);
   const markersRef = useRef([]);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -28,17 +29,19 @@ export function KakaoMap({ toilets, focused }) {
         center,
         level: 5,
       });
+      setMapLoaded(true); // ✅ 지도가 준비된 시점
     });
   }, []);
 
   useEffect(() => {
-    if (!mapObj.current || !window.kakao) return;
+    if (!mapLoaded || !mapObj.current || !window.kakao) return;
     markersRef.current.forEach((m) => m.setMap(null));
     markersRef.current = [];
 
     const bounds = new window.kakao.maps.LatLngBounds();
     for (const t of toilets) {
       if (t.latitude == null || t.longitude == null) continue;
+      console.log("lat", t.latitude, "long", t.longitude);
       const pos = new window.kakao.maps.LatLng(t.latitude, t.longitude);
       const marker = new window.kakao.maps.Marker({ position: pos });
       marker.setMap(mapObj.current);
@@ -48,7 +51,7 @@ export function KakaoMap({ toilets, focused }) {
     if (!bounds.isEmpty()) {
       mapObj.current.setBounds(bounds);
     }
-  }, [toilets]);
+  }, [toilets, mapLoaded]);
 
   useEffect(() => {
     if (!mapObj.current || !focused || !window.kakao) return;
@@ -63,5 +66,3 @@ export function KakaoMap({ toilets, focused }) {
 
   return <div ref={mapRef} className="map" />;
 }
-
-

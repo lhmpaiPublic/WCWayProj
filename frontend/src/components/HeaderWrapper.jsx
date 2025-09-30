@@ -5,11 +5,11 @@ import {
   Button,
   FormControlLabel,
   Switch,
-} from "@mui/material"
-import { Link } from "react-router-dom"
-import styled from "@emotion/styled"
-import { useNavigate } from "react-router-dom"
-import { useEffect } from "react"
+} from "@mui/material";
+import { Link } from "react-router-dom";
+import styled from "@emotion/styled";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const HeaderRoot = styled.div`
   display: flex;
@@ -24,14 +24,14 @@ const HeaderRoot = styled.div`
   top: 0;
   left: 0;
   z-index: 10;
-`
+`;
 
 export default function HeaderWrapper() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     // console.log("로그인상태: ", isLogOn)
-  }, [])
+  }, []);
 
   return (
     <HeaderRoot>
@@ -74,5 +74,5 @@ export default function HeaderWrapper() {
         />
       </Box>
     </HeaderRoot>
-  )
+  );
 }

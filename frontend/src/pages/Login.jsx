@@ -2,8 +2,10 @@ import { useState } from "react";
 import { apiPost } from "../common/axiosapi";
 import { useDispatch } from "react-redux";
 import { localLogOn } from "../stores/auth-slice";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     usrEmail: "",
     usrPw: "",
@@ -30,6 +32,7 @@ export default function Login() {
       if (result.success === "OK")
         dispatch(localLogOn(result?.data?.user || {}));
       console.log("User created:", result);
+      navigate("/");
     } catch (err) {
       setMessage(err.message);
     } finally {

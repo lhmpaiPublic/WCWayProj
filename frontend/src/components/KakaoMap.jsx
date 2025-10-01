@@ -41,7 +41,6 @@ export function KakaoMap({ toilets, focused }) {
     const bounds = new window.kakao.maps.LatLngBounds();
     for (const t of toilets) {
       if (t.latitude == null || t.longitude == null) continue;
-      console.log("lat", t.latitude, "long", t.longitude);
       const pos = new window.kakao.maps.LatLng(t.latitude, t.longitude);
       const marker = new window.kakao.maps.Marker({ position: pos });
       marker.setMap(mapObj.current);

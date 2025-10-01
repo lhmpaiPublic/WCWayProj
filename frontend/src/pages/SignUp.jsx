@@ -1,7 +1,9 @@
-import { useState } from "react"
-import { apiPost } from "../common/axiosapi"
+import { useState } from "react";
+import { apiPost } from "../common/axiosapi";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     usrNm: "",
     usrId: "",
@@ -10,34 +12,34 @@ export default function SignUp() {
     usrPw: "",
     usrPwRe: "",
     agree: false,
-  })
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState("")
+  });
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const onChange = (e) => {
-    const { name, value, type, checked } = e.target
-    setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }))
-  }
+    const { name, value, type, checked } = e.target;
+    setForm((f) => ({ ...f, [name]: type === "checkbox" ? checked : value }));
+  };
 
   const onSubmit = async (e) => {
-    e.preventDefault()
-    setMessage("")
+    e.preventDefault();
+    setMessage("");
     if (!form.usrNm || !form.usrEmail || !form.usrPw || !form.usrPwRe) {
-      setMessage("모든 필드를 입력해주세요.")
-      return
+      setMessage("모든 필드를 입력해주세요.");
+      return;
     }
     if (form.usrPw !== form.usrPwRe) {
-      setMessage("비밀번호가 일치하지 않습니다.")
-      return
+      setMessage("비밀번호가 일치하지 않습니다.");
+      return;
     }
     if (!form.agree) {
-      setMessage("개인 정보 처리 방침에 동의해주세요.")
-      return
+      setMessage("개인 정보 처리 방침에 동의해주세요.");
+      return;
     }
     try {
-      setLoading(true)
-      const res = await apiPost("/public/join", form)
-      onsole.log("User created:", res)
+      setLoading(true);
+      const res = await apiPost("/public/join", form);
+      onsole.log("User created:", res);
       setForm({
         usrNm: "",
         usrId: "",
@@ -46,13 +48,14 @@ export default function SignUp() {
         usrPw: "",
         usrPwRe: "",
         agree: false,
-      })
+      });
+      navigate("/");
     } catch (err) {
-      setMessage(err.message)
+      setMessage(err.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="signup-page">
@@ -145,5 +148,5 @@ export default function SignUp() {
         </aside>
       </div>
     </div>
-  )
+  );
 }

@@ -34,6 +34,12 @@ export default function HeaderWrapper() {
   const { isLocalLogOn } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
+  const onLogOut = (e) => {
+    dispatch(localLogOut());
+    window.localStorage.removeItem("accessToken");
+    window.localStorage.removeItem("refreshToken");
+  };
+
   useEffect(() => {
     // console.log("로그인상태: ", isLogOn)
   }, []);
@@ -75,11 +81,7 @@ export default function HeaderWrapper() {
           </Button>
         ) : null}
         {isLocalLogOn ? (
-          <Button
-            variant="outlined"
-            sx={{ mr: 2 }}
-            onClick={dispatch(localLogOut())}
-          >
+          <Button variant="outlined" sx={{ mr: 2 }} onClick={onLogOut}>
             로그아웃
           </Button>
         ) : null}

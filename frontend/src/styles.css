@@ -575,6 +575,7 @@ select {
   color: #555;
 }
 
+/* head wrap 반응형 코드  */
 /* 모바일 (최대 768px) */
 @media (max-width: 768px) {
   .topbar {
@@ -611,6 +612,7 @@ select {
   }
 }
 
+/* head wrap 반응형 코드  */
 /* 아주 작은 화면 (최대 480px) */
 @media (max-width: 480px) {
   .brand {
@@ -629,5 +631,119 @@ select {
   .auth a {
     width: 100%;
     justify-content: center;
+  }
+}
+/* head wrap 반응형 코드  */
+/* --- 반응형 (태블릿 이하) --- */
+@media (max-width: 1024px) {
+  /* Hero 영역: 세로 배치 */
+  .fx-hero-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .fx-hero-text h1 {
+    font-size: 26px;
+  }
+
+  .fx-hero-text p {
+    font-size: 15px;
+  }
+
+  .fx-hero-visual {
+    height: 180px;
+    margin-top: 16px;
+  }
+
+  /* 카드 2열 */
+  .fx-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 메인 화면 반응형 코드 추가  */
+/* --- 태블릿 이하 (max-width: 1024px) --- */
+@media (max-width: 1024px) {
+  .content {
+    grid-template-columns: 1fr; /* 한 줄로 */
+  }
+
+  .left {
+    order: 2; /* 리스트를 아래로 */
+  }
+
+  .right {
+    order: 1; /* 지도를 위로 */
+  }
+
+  .map {
+    height: 480px; /* 모바일에서는 지도 높이 줄이기 */
+  }
+}
+
+/* --- 모바일 (max-width: 600px) --- */
+@media (max-width: 600px) {
+  .content {
+    padding: 8px;
+    gap: 12px;
+  }
+
+  .map {
+    height: 320px;
+  }
+
+  .list {
+    max-height: 300px; /* 너무 길어지지 않게 */
+  }
+}
+
+/* 기능설명 페이지 반응형 코드  */
+/* --- 모바일 (스마트폰) --- */
+@media (max-width: 600px) {
+  .fx-hero-text h1 {
+    font-size: 20px;
+    line-height: 1.3;
+  }
+
+  .fx-hero-visual {
+    height: 140px;
+  }
+
+  /* 카드 1열 */
+  .fx-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .fx-btn.large {
+    width: 100%;
+    text-align: center;
+  }
+
+  .fx-cta-inner {
+    padding: 24px 12px;
+  }
+
+  .fx-footer {
+    font-size: 11px;
+    text-align: center;
+  }
+}
+
+/* --- 태블릿 이하 (max-width: 1024px) --- */
+@media (max-width: 1024px) {
+  .content {
+    grid-template-columns: 1fr; /* 한 줄로 */
+  }
+
+  .left {
+    order: 2; /* 리스트를 아래로 */
+  }
+
+  .right {
+    order: 1; /* 지도를 위로 */
+  }
+
+  .map {
+    height: 480px; /* 모바일에서는 지도 높이 줄이기 */
   }
 }

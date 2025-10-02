@@ -8,9 +8,11 @@ import {
 } from "react"
 import { TextField, Button, Typography, Paper } from "@mui/material"
 import styled from "@emotion/styled"
+import { AlertContext } from "../Providers/AlertProvider"
+import { api } from "../common/axiosapi"
 
 // 스타일 컴포넌트
-const FormContainer = styled(Paper)`
+const FormContainer = styled.form`
   width: 600px;
   margin: 40px auto;
   padding: 30px;
@@ -23,31 +25,57 @@ const StyledButton = styled(Button)`
   align-self: flex-end;
 `
 
-const BoardForm = () => {
-  const [title, setTitle] = useState("")
-  const [content, setContent] = useState("")
-  const [author, setAuthor] = useState("")
+const initialFormState = {
+  title: "",
+  content: "",
+  author: "",
+}
+// Initial form state
+const initialActionState = false
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log({ title, content, author })
-    // 여기서 API 호출 등 처리 가능
-    alert("글이 등록되었습니다.")
-    // 폼 초기화
-    setTitle("")
-    setContent("")
-    setAuthor("")
+const BoardForm = () => {
+  const [form, setForm] = useState(initialFormState)
+  const { setIsAlertOpen, setAlertMsg } = useContext(AlertContext)
+
+  const onChangeForm = (e) => {
+    const {
+      currentTarget: { name, value },
+    } = e
+    setForm((prev) => ({ ...prev, [name]: value }))
   }
 
+  const createBoard = () => {
+    return new Promise(async (resolve) => {
+      try {
+        const result = await api("/board", form)
+        console.error("board creation:", result)
+        resolve(!formState)
+      } catch (error) {
+        console.error("board creation failed:", error)
+        resolve(!formState)
+      }
+    })
+  }
+
+  const [formState, formAction] = useActionState(
+    createBoard,
+    initialActionState
+  )
+
+  useEffect(() => {
+    console.log("board useEffect:", formState)
+  }, [formState])
+
   return (
-    <FormContainer elevation={3}>
+    <FormContainer elevation={3} action={formAction}>
       <Typography variant="h5">게시판 글쓰기</Typography>
       <TextField
         label="제목"
         variant="outlined"
         fullWidth
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        name="title"
+        value={form.title}
+        onChange={onChangeForm}
       />
       <TextField
         label="내용"
@@ -55,17 +83,19 @@ const BoardForm = () => {
         fullWidth
         multiline
         rows={6}
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
+        name="content"
+        value={form.content}
+        onChange={onChangeForm}
       />
       <TextField
         label="작성자"
         variant="outlined"
         fullWidth
-        value={author}
-        onChange={(e) => setAuthor(e.target.value)}
+        name="author"
+        value={form.author}
+        onChange={onChangeForm}
       />
-      <StyledButton variant="contained" color="primary" onClick={handleSubmit}>
+      <StyledButton variant="contained" color="primary" type="submit">
         등록하기
       </StyledButton>
     </FormContainer>

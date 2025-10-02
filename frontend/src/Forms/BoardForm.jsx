@@ -9,6 +9,7 @@ import {
 import { TextField, Button, Typography, Paper } from "@mui/material"
 import styled from "@emotion/styled"
 import { AlertContext } from "../Providers/AlertProvider"
+import { api } from "../common/axiosapi"
 
 // 스타일 컴포넌트
 const FormContainer = styled.form`
@@ -46,10 +47,11 @@ const BoardForm = () => {
   const createBoard = () => {
     return new Promise(async (resolve) => {
       try {
+        const result = await api("/board", form)
+        console.error("board creation:", result)
         resolve(!formState)
       } catch (error) {
-        debugger
-        console.error("User creation failed:", error)
+        console.error("board creation failed:", error)
         resolve(!formState)
       }
     })
@@ -61,7 +63,7 @@ const BoardForm = () => {
   )
 
   useEffect(() => {
-    console.log("User useEffect:", formState)
+    console.log("board useEffect:", formState)
   }, [formState])
 
   return (
@@ -71,6 +73,7 @@ const BoardForm = () => {
         label="제목"
         variant="outlined"
         fullWidth
+        name="title"
         value={form.title}
         onChange={onChangeForm}
       />
@@ -80,6 +83,7 @@ const BoardForm = () => {
         fullWidth
         multiline
         rows={6}
+        name="content"
         value={form.content}
         onChange={onChangeForm}
       />
@@ -87,6 +91,7 @@ const BoardForm = () => {
         label="작성자"
         variant="outlined"
         fullWidth
+        name="author"
         value={form.author}
         onChange={onChangeForm}
       />

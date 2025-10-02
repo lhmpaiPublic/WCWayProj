@@ -15,12 +15,14 @@ const publicRouter = require("./routes/public-router")
 const fileUploadRouter = require("./routes/fileUploadrRouter")
 const chatbotRouter = require("./routes/chatbot-router")
 const toiletRouter = require("./routes/toilet-router")
+const boradRouter = require("./routes/board-router")
 
 app.use("/upload", fileUploadRouter)
 app.use("/book", bookRouter)
 app.use("/public", publicRouter)
 app.use("/chatbot", chatbotRouter)
 app.use("/home", toiletRouter)
+app.use("/board", boradRouter)
 
 app.get("/login", (req, res, next) => {
   const { usrId, usrPw } = req.query

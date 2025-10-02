@@ -45,10 +45,12 @@ export default function HeaderWrapper() {
   }, [])
 
   return (
-    <HeaderRoot>
-      <Typography variant="h5">공중 화장실 위치 정보 서비스</Typography>
-      <Breadcrumbs>
-        <Typography variant="h6" component={Link} to="/">
+    <HeaderRoot className="topbar">
+      <Typography variant="h5" className="brand">
+        공중 화장실 위치 정보 서비스
+      </Typography>
+      <Breadcrumbs className="nav">
+        <Typography variant="h6" component={Link} to="/" className="active">
           HOME
         </Typography>
         <Typography variant="h6" component={Link} to="/features">
@@ -61,11 +63,11 @@ export default function HeaderWrapper() {
           챗봇
         </Typography>
       </Breadcrumbs>
-      <Box>
+      <Box className="auth">
         {!isLocalLogOn ? (
           <Button
             variant="outlined"
-            sx={{ mr: 2 }}
+            className="link"
             onClick={() => navigate("/join")}
           >
             회원가입
@@ -74,6 +76,7 @@ export default function HeaderWrapper() {
         {!isLocalLogOn ? (
           <Button
             variant="outlined"
+            className="link"
             sx={{ mr: 2 }}
             onClick={() => navigate("/login")}
           >
@@ -81,7 +84,12 @@ export default function HeaderWrapper() {
           </Button>
         ) : null}
         {isLocalLogOn ? (
-          <Button variant="outlined" sx={{ mr: 2 }} onClick={onLogOut}>
+          <Button
+            variant="outlined"
+            className="primary"
+            sx={{ mr: 2 }}
+            onClick={onLogOut}
+          >
             로그아웃
           </Button>
         ) : null}

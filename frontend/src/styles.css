@@ -33,6 +33,15 @@ body {
   font-weight: 700;
   color: #5b5bd6;
 }
+.brand-logo {
+  width: 40px;
+  height: 40px;
+  background-image: url(../public/image/toilet\ logo.png);
+  background-size: cover;
+  background-position: center;
+  display: inline-block;
+  margin-right: 8px;
+}
 .nav {
   display: flex;
   gap: 22px;
@@ -564,4 +573,61 @@ select {
   margin: 0;
   padding-left: 18px;
   color: #555;
+}
+
+/* 모바일 (최대 768px) */
+@media (max-width: 768px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 12px;
+  }
+
+  .brand {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .nav {
+    position: static;
+    transform: none;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .auth {
+    width: 100%;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .auth .primary,
+  .auth .link {
+    flex: 1; /* 버튼이 가로로 꽉 차게 */
+    justify-content: center;
+  }
+}
+
+/* 아주 작은 화면 (최대 480px) */
+@media (max-width: 480px) {
+  .brand {
+    font-size: 16px;
+  }
+
+  .nav a {
+    font-size: 14px;
+  }
+
+  .auth {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .auth a {
+    width: 100%;
+    justify-content: center;
+  }
 }

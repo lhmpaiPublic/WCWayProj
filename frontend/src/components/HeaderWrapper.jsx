@@ -46,6 +46,7 @@ export default function HeaderWrapper() {
 
   return (
     <HeaderRoot className="topbar">
+      <span className="brand-logo"></span>
       <Typography variant="h5" className="brand">
         공중 화장실 위치 정보 서비스
       </Typography>

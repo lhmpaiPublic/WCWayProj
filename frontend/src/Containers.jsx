@@ -5,7 +5,7 @@ import HeaderWrapper from "./components/HeaderWrapper"
 import JoinPage from "./pages/SignUp"
 import LoginPage from "./pages/Login"
 import HOME from "./pages/Home"
-import Board from "./pages/Board"
+import Board from "./pages/BoardPage"
 import Features from "./pages/Features"
 import Chatbot from "./pages/Chatbot"
 

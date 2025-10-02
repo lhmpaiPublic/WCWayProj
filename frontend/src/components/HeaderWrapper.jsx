@@ -5,13 +5,13 @@ import {
   Button,
   FormControlLabel,
   Switch,
-} from "@mui/material";
-import { Link } from "react-router-dom";
-import styled from "@emotion/styled";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { localLogOut } from "../stores/auth-slice";
+} from "@mui/material"
+import { Link } from "react-router-dom"
+import styled from "@emotion/styled"
+import { useNavigate } from "react-router-dom"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { localLogOut } from "../stores/auth-slice"
 
 const HeaderRoot = styled.div`
   display: flex;
@@ -26,23 +26,23 @@ const HeaderRoot = styled.div`
   top: 0;
   left: 0;
   z-index: 10;
-`;
+`
 
 export default function HeaderWrapper() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const { isLocalLogOn } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const { isLocalLogOn } = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
 
   const onLogOut = (e) => {
-    dispatch(localLogOut());
-    window.localStorage.removeItem("accessToken");
-    window.localStorage.removeItem("refreshToken");
-  };
+    dispatch(localLogOut())
+    window.localStorage.removeItem("accessToken")
+    window.localStorage.removeItem("refreshToken")
+  }
 
   useEffect(() => {
     // console.log("로그인상태: ", isLogOn)
-  }, []);
+  }, [])
 
   return (
     <HeaderRoot>
@@ -85,11 +85,16 @@ export default function HeaderWrapper() {
             로그아웃
           </Button>
         ) : null}
+        {isLocalLogOn ? (
+          <Button variant="outlined" sx={{ mr: 2 }}>
+            글쓰기
+          </Button>
+        ) : null}
         <FormControlLabel
           control={<Switch onChange={() => navigate("/login")} name="theme" />}
           label="Theme"
         />
       </Box>
     </HeaderRoot>
-  );
+  )
 }

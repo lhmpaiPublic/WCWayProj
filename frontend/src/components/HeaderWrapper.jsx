@@ -94,11 +94,6 @@ export default function HeaderWrapper() {
             로그아웃
           </Button>
         ) : null}
-        {isLocalLogOn ? (
-          <Button variant="outlined" sx={{ mr: 2 }}>
-            글쓰기
-          </Button>
-        ) : null}
         <FormControlLabel
           control={<Switch onChange={() => navigate("/login")} name="theme" />}
           label="Theme"

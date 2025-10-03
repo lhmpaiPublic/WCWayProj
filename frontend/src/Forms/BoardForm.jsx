@@ -29,6 +29,7 @@ const initialFormState = {
   title: "",
   content: "",
   author: "",
+  tags: "",
 }
 // Initial form state
 const initialActionState = false
@@ -85,6 +86,14 @@ const BoardForm = () => {
         rows={6}
         name="content"
         value={form.content}
+        onChange={onChangeForm}
+      />
+      <TextField
+        label="테그(2~5자 내외)"
+        variant="outlined"
+        fullWidth
+        name="tags"
+        value={form.tags}
         onChange={onChangeForm}
       />
       <TextField

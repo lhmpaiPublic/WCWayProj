@@ -34,7 +34,7 @@ const initialFormState = {
 // Initial form state
 const initialActionState = false
 
-const BoardForm = () => {
+export default function BoardForm({ mutate }) {
   const [form, setForm] = useState(initialFormState)
   const { setIsAlertOpen, setAlertMsg } = useContext(AlertContext)
 
@@ -110,5 +110,3 @@ const BoardForm = () => {
     </FormContainer>
   )
 }
-
-export default BoardForm

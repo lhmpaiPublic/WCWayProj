@@ -1,4 +1,3 @@
-import { useMemo, useState } from "react"
 import { Button, Box } from "@mui/material"
 import styled from "@emotion/styled"
 import { InputBase, Typography } from "@mui/material"
@@ -210,7 +209,7 @@ function PostCard({ post }) {
       <Title variant="subtitle1">{post.title}</Title>
       <Content>{post.content}</Content>
       <Tags>
-        {post.tags.map((t) => (
+        {post.tags.split(",").map((t) => (
           <Tag key={t}>{t}</Tag>
         ))}
       </Tags>
@@ -228,31 +227,13 @@ function PostCard({ post }) {
   )
 }
 
-export default function Board() {
-  const [sort, setSort] = useState("latest")
-  const [query, setQuery] = useState("")
-
-  const filtered = useMemo(() => {
-    const q = query.trim()
-    let data = [...MOCK_POSTS]
-    if (q) {
-      const lower = q.toLowerCase()
-      data = data.filter(
-        (p) =>
-          p.title.toLowerCase().includes(lower) ||
-          p.content.toLowerCase().includes(lower) ||
-          p.author.toLowerCase().includes(lower) ||
-          p.tags.some((t) => t.toLowerCase().includes(lower))
-      )
-    }
-    if (sort === "latest") {
-      data.sort((a, b) => new Date(b.date) - new Date(a.date))
-    } else if (sort === "popular") {
-      data.sort((a, b) => b.likes - a.likes)
-    }
-    return data
-  }, [sort, query])
-
+export default function BoardList({
+  boardlist,
+  sort,
+  query,
+  setSort,
+  setQuery,
+}) {
   return (
     <>
       <HeroSection>
@@ -299,7 +280,7 @@ export default function Board() {
       <ListSection>
         <Wrapper>
           <Grid>
-            {filtered.map((post) => (
+            {boardlist?.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
           </Grid>

@@ -15,9 +15,8 @@ router.get(
 )
 
 router.get("/", reqBoardList(), (req, res, next) => {
-  res.status(200).json({
-    success: "OK",
-  })
+  const list = req.params?.rs || []
+  res.status(200).json({ success: "OK", data: { list } })
 })
 
 module.exports = router

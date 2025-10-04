@@ -1,6 +1,7 @@
 import { Button, Box } from "@mui/material"
 import styled from "@emotion/styled"
 import { InputBase, Typography } from "@mui/material"
+import { api } from "../common/axiosapi"
 
 const MOCK_POSTS = [
   {
@@ -192,10 +193,21 @@ const Grid = styled(Box)`
 `
 
 function PostCard({ post }) {
-  const onChangeForm = (e) => {
-    const {
-      currentTarget: { name, value },
-    } = e
+  const onClickForm = (e) => {
+    return new Promise(async (resolve) => {
+      try {
+        const {
+          currentTarget: { name, value },
+        } = e
+        const result = await api("/board/empathy", {
+          id: `${value}`,
+        })
+        resolve(!formState)
+      } catch (error) {
+        console.log("chatbot failed:", error)
+        resolve(!formState)
+      }
+    })
   }
   return (
     <Card>
@@ -218,7 +230,7 @@ function PostCard({ post }) {
           variant="outlined"
           name="id"
           value={post.id}
-          onChange={onChangeForm}
+          onClick={onClickForm}
         >
           좋아요!!
         </Button>

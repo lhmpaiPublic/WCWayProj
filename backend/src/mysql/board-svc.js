@@ -30,6 +30,28 @@ const registBoard = () => {
   }
 }
 
+const empathyBoard = () => {
+  return async (req, res, next) => {
+    try {
+      const { id } = req.query
+
+      const sqlUpdate = `UPDATE boardlist SET likes = likes + 1 WHERE id = ?`
+      const [rs] = await pool.execute(sqlUpdate, [id])
+      req.params.rs = rs
+      return next()
+    } catch (err) {
+      const errData = {
+        name: "REGISTBOARD_FAILE",
+        message: "Board 등록 요청을 찾을 수 없습니다",
+        status: 200,
+        cod: 112,
+        data: err,
+      }
+      return next(errData)
+    }
+  }
+}
+
 const reqBoardList = ({ field = "id", sort = "DESC" } = {}) => {
   return async (req, res, next) => {
     try {
@@ -63,4 +85,4 @@ const reqBoardList = ({ field = "id", sort = "DESC" } = {}) => {
   }
 }
 
-module.exports = { registBoard, reqBoardList }
+module.exports = { registBoard, reqBoardList, empathyBoard }

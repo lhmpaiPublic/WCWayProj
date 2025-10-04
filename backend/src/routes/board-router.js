@@ -1,7 +1,11 @@
 const express = require("express")
 const router = express.Router()
 const { boardDataValidation } = require("../validation/board-validation")
-const { registBoard, reqBoardList } = require("../mysql/board-svc")
+const {
+  registBoard,
+  reqBoardList,
+  empathyBoard,
+} = require("../mysql/board-svc")
 
 router.get(
   "/regist",
@@ -13,6 +17,12 @@ router.get(
     })
   }
 )
+
+router.get("/empathy", empathyBoard(), (req, res, next) => {
+  res.status(200).json({
+    success: "OK",
+  })
+})
 
 router.get("/", reqBoardList(), (req, res, next) => {
   const list = req.params?.rs || []

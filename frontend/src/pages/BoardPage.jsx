@@ -26,7 +26,7 @@ export default function BookPage() {
           p.title.toLowerCase().includes(q) ||
           p.content.toLowerCase().includes(q) ||
           p.author.toLowerCase().includes(q) ||
-          p.tags.some((t) => t.toLowerCase().includes(q))
+          p.tags.toLowerCase().includes(q)
       )
     }
 

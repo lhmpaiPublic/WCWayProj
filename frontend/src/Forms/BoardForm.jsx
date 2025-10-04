@@ -48,8 +48,11 @@ export default function BoardForm({ mutate }) {
   const createBoard = () => {
     return new Promise(async (resolve) => {
       try {
-        const result = await api("/board", form)
-        console.error("board creation:", result)
+        const result = await api("/board/regist", form)
+        if (result.success === "OK") {
+          mutate()
+        } else {
+        }
         resolve(!formState)
       } catch (error) {
         console.error("board creation failed:", error)
@@ -64,7 +67,7 @@ export default function BoardForm({ mutate }) {
   )
 
   useEffect(() => {
-    console.log("board useEffect:", formState)
+    setForm(initialFormState)
   }, [formState])
 
   return (

@@ -11,11 +11,10 @@ import {
   Paper,
 } from "@mui/material"
 
-
 // Initial form state
 const initialActionState = false
 
-export default function BookList({listArr}) {
+export default function BookList({ listArr }) {
   const { setIsAlertOpen, setAlertMsg } = useContext(AlertContext)
   const onImgError = (/*e: React.ChangeEvent<HTMLImageElement>*/) => {
     //e.target.src = "/images/no-image.jpg"
@@ -27,8 +26,6 @@ export default function BookList({listArr}) {
         // Replace with your actual axios call
         // await axios.post('/api/users', { usrNm, usrId, usrPw, usrEmail });
 
-        console.log("User created:")
- 
         // Reset form on success
         resolve(!formState)
       } catch (error) {

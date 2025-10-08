@@ -1,6 +1,6 @@
-import { useActionState, useEffect, useContext } from "react";
-import { AlertContext } from "../Providers/AlertProvider";
-import dayjs from "dayjs";
+import { useActionState, useEffect, useContext } from "react"
+import { AlertContext } from "../Providers/AlertProvider"
+import dayjs from "dayjs"
 import {
   Table,
   TableBody,
@@ -9,45 +9,44 @@ import {
   TableHead,
   TableRow,
   Paper,
-} from "@mui/material";
+} from "@mui/material"
 
 // Initial form state
-const initialActionState = false;
+const initialActionState = false
 
 export default function BookList({ data }) {
-  const { setIsAlertOpen, setAlertMsg } = useContext(AlertContext);
+  const { setIsAlertOpen, setAlertMsg } = useContext(AlertContext)
   const onImgError = (/*e: React.ChangeEvent<HTMLImageElement>*/) => {
     //e.target.src = "/images/no-image.jpg"
-  };
+  }
 
-  const booklist = ()=> {
+  const booklist = () => {
     return new Promise(async (resolve) => {
       try {
         // Replace with your actual axios call
         // await axios.post('/api/users', { usrNm, usrId, usrPw, usrEmail });
 
-        console.log("User created:");
         // Reset form on success
-        resolve(!formState);
+        resolve(!formState)
       } catch (error) {
-        console.error("User creation failed:", error);
+        console.error("User creation failed:", error)
         // Optionally return previous form state to preserve user input
-        resolve(!formState);
+        resolve(!formState)
       }
-    });
-  };
+    })
+  }
 
-  const [formState] = useActionState(booklist, initialActionState);
+  const [formState] = useActionState(booklist, initialActionState)
 
   useEffect(() => {
-    console.log("User useEffect:", formState);
-    setIsAlertOpen(true);
-    setAlertMsg("JOIN 완료");
-  }, []);
-  console.log(data);
-  (data?.list || []).map((row) => {
-    console.log(row.id);
-  });
+    console.log("User useEffect:", formState)
+    setIsAlertOpen(true)
+    setAlertMsg("JOIN 완료")
+  }, [])
+  console.log(data)
+  ;(data?.list || []).map((row) => {
+    console.log(row.id)
+  })
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }}>
@@ -93,5 +92,5 @@ export default function BookList({ data }) {
         }
       </Table>
     </TableContainer>
-  );
+  )
 }

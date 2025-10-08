@@ -13,21 +13,21 @@ import { swrValue } from "./Providers/SWRProvider"
 
 function App() {
   return (
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <ErrorProvider>
-        <StoreProvider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-          <SWRConfig value={swrValue}>
-          <AlertProvider>
-          <BrowserRouter>
-            <Containers />
-          </BrowserRouter>
-          </AlertProvider>
-          </SWRConfig>
-        </PersistGate>
-        </StoreProvider>
-     </ErrorProvider>
-   </ErrorBoundary>
+    <BrowserRouter>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <ErrorProvider>
+          <StoreProvider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <SWRConfig value={swrValue}>
+                <AlertProvider>
+                  <Containers />
+                </AlertProvider>
+              </SWRConfig>
+            </PersistGate>
+          </StoreProvider>
+        </ErrorProvider>
+      </ErrorBoundary>
+    </BrowserRouter>
   )
 }
 

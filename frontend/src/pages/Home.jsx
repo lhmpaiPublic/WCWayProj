@@ -26,7 +26,6 @@ export default function Home() {
 
   useEffect(
     () => {
-      console.log("aaaa")
       const d = GuList(selectedSido)[0].districts
       setSelectedGu(d[0])
       setGulist(d)
@@ -46,7 +45,6 @@ export default function Home() {
             gu: selectedGu,
           })
 
-          console.log("User created:", data)
           const rss = data.list.map((dt) => ({
             id: dt.id,
             name: dt.name,

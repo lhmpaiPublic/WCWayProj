@@ -64,7 +64,6 @@ export default function UploadForm({ setVal }) {
         }
         const rs = await apiFile("/upload", formData)
         if (rs?.success === "OK") {
-          console.log("User created:")
           setVal(rs.data)
           resolve(!formState)
         }

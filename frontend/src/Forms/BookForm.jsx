@@ -64,7 +64,6 @@ export default function BookForm({ mutate }) {
         }
         const rs = await apiFile("/book", formData)
         if (rs?.success === "OK") {
-          console.log("User created:")
           if (rs?.success === "OK") mutate()
           resolve(!formState)
         }

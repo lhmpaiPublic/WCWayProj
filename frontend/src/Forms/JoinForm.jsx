@@ -66,7 +66,6 @@ export default function JoinForm() {
         // await axios.post('/api/users', { usrNm, usrId, usrPw, usrEmail });
 
         const result = await apiPost("/public/join", form)
-        console.log("User created:", result)
 
         // Reset form on success
         resolve(!formState)
@@ -84,7 +83,7 @@ export default function JoinForm() {
   useEffect(() => {
     console.log("User useEffect:", formState)
     setIsAlertOpen(true)
-    setAlertMsg("JOIN 완료")
+    setAlertMsg("회원가입 완료")
   }, [formState])
 
   return (

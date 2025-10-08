@@ -1,6 +1,7 @@
 import { Button } from "@mui/material"
 import { useEffect } from "react"
 import styled from "@emotion/styled"
+import { useNavigate } from "react-router-dom"
 
 // 스타일 정의
 const ErrorContainer = styled.div`
@@ -30,13 +31,10 @@ const ErrorContent = styled.p`
 `
 
 // Fallback 컴포넌트
-export default function ErrorFallback({
-  error,
-  resetErrorBoundary,
-}) {
+export default function ErrorFallback({ error, resetErrorBoundary }) {
+  const navigate = useNavigate()
   const onReset = () => {
     resetErrorBoundary() // 필요시 사용
-    //window.location.href = "/"
   }
 
   useEffect(() => {
@@ -45,7 +43,6 @@ export default function ErrorFallback({
 
   const extendedError = error
 
-  debugger
   return (
     <ErrorContainer>
       <ErrorWrapper>
@@ -56,7 +53,6 @@ export default function ErrorFallback({
         <Button
           onClick={onReset}
           variant="outlined"
-          
           color="warning"
           style={{ marginTop: "1em" }}
         >

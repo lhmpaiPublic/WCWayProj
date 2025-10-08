@@ -79,6 +79,8 @@ export default function LoginForm() {
         // await axios.post('/api/users', { usrNm, usrId, usrPw, usrEmail });
 
         const result = await apiPost("/public/login", form)
+        if (result.success === "OK")
+          dispatch(localLogOn(result?.data?.user || {}))
         console.log("User created:", result)
 
         // Reset form on success
@@ -97,7 +99,6 @@ export default function LoginForm() {
   useEffect(() => {
     console.log("User useEffect:", formState)
     console.log("User state:", isLocalLogOn, localUser.id)
-    dispatch(localLogOn({ id: "vawing21" }))
     console.log("User state:", isLocalLogOn, localUser.id)
     setIsAlertOpen(true)
     setAlertMsg("LOGIN 완료")
